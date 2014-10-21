@@ -28,6 +28,8 @@ Once that's done we're exploring more fundamental concepts when working with a S
 
 To round things off, we're briefly discussing continuous integration to make sure the tests introduced in previous sections are continuously executed.
 
+The source document for this script can be found in https://github.com/olivergierke/spring-webapps[this GitHub repository]. Feel free to create tickets for improvements or provide patches via pull requests.
+
 :numbered:
 ## Infrastructure prerequisites
 
