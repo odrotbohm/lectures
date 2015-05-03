@@ -1,5 +1,7 @@
-# State-of-the-art web application development with Java and Spring
+# Lecture scripts and slides
 
-This repository contains the script for a lecture I held at TU Dresden in support of the Sofware Engineering Lab in winter semester 2014. It's primary goal is to ramp up the students with the very basics of Java web application development.
+This repository contains scripts, slide decks and some sample code for lectures I held.
 
-The script is written in http://www.asciidoctor.org[Asciidoctor] and can be viewed http://static.olivergierke.de/spring-webapps/index.html[here]. To build the HTML file yourself, install Asciidoctor as described http://asciidoctor.org/docs/install-toolchain/[in the documentation] and run `asciidoctor index.adoc`.
+## Software engineering labs
+
+* `spring-web-apps` - State-of-the art web applications with Java and Spring
