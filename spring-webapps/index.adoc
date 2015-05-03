@@ -82,7 +82,7 @@ What do we have here?
 
 ### Add minimal functionality and run this thing
 
-* Create a new class:
+* Create a new class, e.g. in the `demo` package: Select `src/main/java`, press kbd:[⌥+⌘+N], type `Class` or select menu:File[New… > Class] to bring up the new class wizard. Enter `demo` for the package name, `WelcomeController` as type name. Edit the created class to look like this:
 +
 .A simple Spring MVC controller
 ====
@@ -106,7 +106,7 @@ class WelcomeController {
 ====
 When pasting this code into your IDE it might already import the right types for you. In case it doesn't and you see red underlines e.g. under `@RestController` you have a variety of options:
 
-* Navigate to right after `@RestController` and hit kbd:[⌘+Space]. This will trigger code completion suggestions and either provide you with a drop down list to choose the type from (in case multiple ones matching what you typed are on the classpath).
+* Navigate to right after `@RestController` and hit kbd:[⌃+Space]. This will trigger code completion suggestions and either provide you with a drop down list to choose the type from (in case multiple ones matching what you typed are on the classpath).
 * Alternatively try kbd:[⌘+⇧+O] (Organize imports), which should try to resolve the type tokens you used.
 ====
 
