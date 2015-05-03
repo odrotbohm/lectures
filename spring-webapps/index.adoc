@@ -20,7 +20,7 @@ The fundamental goals of the lecture are:
 * How to control the build and project dependencies using Maven.
 * How to build Spring and Spring MVC based web applications.
 
-The lecture content is three-fold: we're going to start by looking at the infrastructure prerequisites so that everyone is aware of what's going to be needed to follow the pratical examples. Based on that we're going to walk through a quickstart guide to give students a general idea of how to set up a new Spring (Boot) based Java web project. At this point we're not going to go into details but just see it working.
+The lecture content is three-fold: we're going to start by looking at the infrastructure prerequisites so that everyone is aware of what's going to be needed to follow the practical examples. Based on that we're going to walk through a quick start guide to give students a general idea of how to set up a new Spring (Boot) based Java web project. At this point we're not going to go into details but just see it working.
 
 We're also going to have a look into details of Maven and the way it does dependency management as students will probably use other libraries than presented in the sample application and should also be able to set up a command line build (e.g for continuous integration).
 
@@ -38,7 +38,7 @@ The source document for this script can be found in https://github.com/olivergie
 * STS -> IDE, Spring flavored Eclipsefootnote:[Eclipse -- http://www.eclipse.org[Project website]], a standard Eclipse will do as well, but lacks some Spring-related support (https://spring.io/tools[Download])
 * Git -> version control (http://git-scm.com/downloads[Download])
 
-## Quickstart
+## Quick start
 
 ### Objectives
 
@@ -52,16 +52,16 @@ The source document for this script can be found in https://github.com/olivergie
 
 1. Start STS.
 2. Create a new project menu:File[New… > Other] (or kbd:[⌘+N]).
-3. Select Spring Starter Project.
-4. Keep settings (details on that below)
-5. Select application aspects that you're interested in (e.g. Web).
+3. Select "Spring Starter Project".
+4. Keep settings (details on that below).
+5. Select "Web" in the Dependencies matrix.
 6. Select btn:[Finish].
 
 .Manual version
 
 1. Browse to http://start.spring.io.
 2. Keep settings (details on them below).
-3. Select application aspects that you're interested in (e.g. Web).
+3. Select "Web" in the Dependencies matrix.
 4. Select btn:[Generate project].
 5. Open up your IDE.
 6. In Eclipse select menu:File[Import…].
@@ -78,7 +78,7 @@ What do we have here?
 * `static` / `templates` folders in `src/main/resources` - Folders for static resources and view templates.
 * `application.properties` - Configuration file.
 * `ApplicationTests.java` - Integration test to test the application.
-* `pom.xml` - The POM (Project Object Model). A Maven configuration file to control project setup, build and depdencies.
+* `pom.xml` - The POM (Project Object Model). A Maven configuration file to control project setup, build and dependencies.
 
 ### Add minimal functionality and run this thing
 
@@ -153,62 +153,64 @@ image::images/maven-console.png[]
 [source, xml]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.test</groupId> <1>
-	<artifactId>demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging> <2>
+  <groupId>org.test</groupId> <1>
+  <artifactId>demo</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging> <2>
 
-	<name>java-web-sample</name>
-	<description>Demo project for Spring Boot</description>
+  <name>java-web-sample</name>
+  <description>Demo project for Spring Boot</description>
 
-	<parent> <3>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.1.8.RELEASE</version>
-		<relativePath/>
-	</parent>
+  <parent> <3>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>1.1.8.RELEASE</version>
+    <relativePath/>
+  </parent>
 
-	<properties> <4>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>demo.Application</start-class>
-	</properties>
+  <properties> <4>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <start-class>demo.Application</start-class>
+  </properties>
 
-	<dependencies> <5>
+  <dependencies> <5>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-		</dependency>
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
 
-	<build> <6>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+  </dependencies>
+
+  <build> <6>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
 ----
@@ -534,12 +536,12 @@ class MyDependingComponent {
 ====
 ----
 Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [demo.MyApplicationComponent] found for dependency: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {}
-    at o.s.b.f.s.DefaultListableBeanFactory.raiseNoSuchBeanDefinitionException(…:1118)
-    at o.s.b.f.s.DefaultListableBeanFactory.doResolveDependency(…:967)
-    at o.s.b.f.s.DefaultListableBeanFactory.resolveDependency(…:862)
-    at o.s.b.f.s.ConstructorResolver.resolveAutowiredArgument(…:811)
-    at o.s.b.f.s.ConstructorResolver.createArgumentArray(…:739)
-    ... 42 common frames omitted
+  at o.s.b.f.s.DefaultListableBeanFactory.raiseNoSuchBeanDefinitionException(…:1118)
+  at o.s.b.f.s.DefaultListableBeanFactory.doResolveDependency(…:967)
+  at o.s.b.f.s.DefaultListableBeanFactory.resolveDependency(…:862)
+  at o.s.b.f.s.ConstructorResolver.resolveAutowiredArgument(…:811)
+  at o.s.b.f.s.ConstructorResolver.createArgumentArray(…:739)
+  ... 42 common frames omitted
 ----
 ====
 
@@ -623,16 +625,16 @@ import static org.junit.Assert.*;
 @Transactional
 public class GuestbookIntegrationTest {
 
-    @Autowired Guestbook repository;
+  @Autowired Guestbook repository;
 
-    @Test
-    public void persistsGuestbookEntry() {
+  @Test
+  public void persistsGuestbookEntry() {
 
-        GuestbookEntry entry = new GuestbookEntry("Yoda", "May the source be with you!");
-        repository.save(entry);
+    GuestbookEntry entry = new GuestbookEntry("Yoda", "May the source be with you!");
+    repository.save(entry);
 
-        assertThat(repository.findAll(), hasItem(entry));
-    }
+    assertThat(repository.findAll(), hasItem(entry));
+  }
 }
 ----
 ====
