@@ -1,0 +1,176 @@
+# Fundamentals of Java development tooling
+Oliver Gierke
+:revdate: {docdatetime}
+:revremark: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+:numbered:
+:experimental:
+:source-highlighter: prettify
+:sectids!:
+:sectanchors: true
+:icons: font
+:toc:
+:livebase: http://static.olivergierke.de/lectures
+
+:numbered!:
+[preface]
+[[intro]]
+## Introduction
+
+This script should help you to get started with the fundamental tooling to support you when developing Java applications. Well cover the basic setup and usage of integrated development environments (IDEs) and build systems.
+
+[[intro.resources]]
+### Resources
+
+* https://github.com/olivergierke/lectures[Script repository]
+* link:{livebase}/java-tooling[Script]
+
+:numbered:
+[[prerequisites]]
+## Infrastructure prerequisites
+* JDK -> current version 8 (http://www.oracle.com/technetwork/java/javase/downloads/index.html[Download SDK])
+* IDEs
+** https://eclipse.org/downloads/[Eclipse]
+** https://spring.io/tools/sts[STS] - Adds Spring Framework specific tooling
+** https://www.jetbrains.com/idea/download/[IntelliJ IDEA]
+** https://netbeans.org/downloads/[Netbeans]
+* Maven (optional) -> to execute the build at the command line (for continuous integration, release builds) (http://maven.apache.org/download.cgi[Download])
+
+[[quickstart]]
+## Quick start
+
+We're gonna create a new project within Eclipse here. This will be a Maven based project (see <<build.maven>>) for details.
+
+1. Start Eclipse/STS.
+2. Create a new Maven project.
++
+* menu:File[New > Other…] or kbd:[⌘+N]
+* type "Maven", select "Maven Project", btn:[Next]
+* check "Create simple project", btn:[Next]
+* enter group and artifact identifier, e.g. `demo` and `sample-project` (artifact identifier will become project name)
+TODO: Screenshot
+3. Create a Java class.
++
+* Select `src/main/java`, kbd:[⌥+⌘+N], type `Class`, kbd:[⏎] or right-click, menu:New[Class]
+* define a package of `demo`, type name `HelloWorld`
+
+4. Add a main method.
++
+[source, java]
+----
+public static void main(String... args) {
+    System.out.println("Hello world!");
+}
+----
+
+5. Run the class.
++
+* Select the class in the project or package explorer (left column).
+* kbd:[⌥+⌘+X], kbd:[J] or right-click, select menu:Run As[Java Application].
+* see `Hello world!` printed to the console.
+
+[[ide]]
+## Eclipse
+
+Eclipse is an integrated development environment (IDE). It's primarily used for Java development but can be equipped with plugins to develop software in other languages as well.
+
+[[ide.advantages]]
+### Advantages of using an IDE
+
+* *Quick code base navigation* - IDEs allow you to navigate the code base in a semantic way by referring to types, methods, fields etc.
+* *Code editing / refactoring* - Because the code you wirte is structurally and semantically analyzed, the IDE can help you write code quicker and avoid typing mistakes. Also changes to the code base can be executed in a way that the IDE makes sure they're applied consistently like method or field renames. Also, IDEs usually compile code on the fly and are even capable of partially compiling code bases. This provides instant feedback about programming mistakes.
+* *Executing code* - IDEs allow you to run tha application or parts of it right from within the IDE. This especially comes in handy when working with test cases.
+
+[[ide.views-and-perspectives]]
+### Views and perspectives
+
+Core UI concepts are views that can be arranged in a certain way to make up a perspective.
+
+* Open a view: menu:Window[Show view > Other…]
+* Open a perspective: menu:Window[Open perspective > Other…]
+* Switch between perspectives: kbd:[⌘+F8]
+
+* Spring / Java perspective
+** Project explorer (usually on the left side) - browse projects
+** Editors - main screen, multiple tabs
+** image:images/console_view.png[] Console - output of the program, Maven build information
+** image:images/junit_view.gif[] JUnit - test results, test execution
+* Debug perspective
+** image:images/debug_view.gif[] Debug view - process information, stack
+** image:images/variable_view.gif[] Variables - variable context at the current breakpoint
+** image:images/breakpoints_view.gif[] Breakpoints - break points currently defined
+** image:images/display_view.gif[] Display - live code execution within the current context
+
+[[build]]
+## Project build
+
+Compiling a set of Java classes is usually not enough to actually run software in production. The application needs to be assembled, integration tested, documentation needs to be created, bundled and published. This is where build systems come into play.
+
+A build system allows users to declare and configure individual elements of a build process. The predominant build systems in the Java space are Maven and Gradle. Maven is currently the most widely used one although Gradle's gaining traction. The latter is quite a bit more flexible when it comes to more advanced requirements in a project build. As we're not going to need this flexibility we'll stick to Maven for this lecture.
+
+[[build.maven]]
+### Maven
+
+* Build execution
+* Dependency management
+
+* `pom.xml`
+* Project conventions
+
+[[build.maven.execution]]
+#### Build execution
+** Lifecycle (process resources, compile, test, package, distribute)
+** Plugins
+** IDE derives settings (which Java version)
+
+[[build.maven.dependency-management]]
+#### Dependency management
+
+* Using libraries
+* How to include them into the project?
+* Defined logically (groupId:artifactId:version), resolved through so called repositories
+* Maven central
+* Local cache in `~/.m2/repository`
+* Includes binaries (JAR), sources, JavaDoc
+* IDE integration
+
+[appendix]
+[[appendix.shortcuts]]
+## Keyboard shortcuts
+
+### Code base navigation
+
+* kbd:[⌘+⇧+T] - Open type (supports `*` and camel case lookups, e.g `ArLi` matches `ArrayList`)
+* kbd:[⌘+⇧+R] - Open resource (like Open Type but also includes non-code source files)
+* kbd:[⌘+O] - Outline (lists class methods and properties, type right away and hit btn:[Enter] to jump to the currently selected location).
+* kbd:[⌘+T] - Show type hierarchy.
+* kbd:[⌘+⇧+G] - Search for references in the workspace.
+* kbd:[⌃+⌥+H] - Find code that calls the selected method.
+
+### Code editing / refactoring
+
+* kbd:[⌃+Space] - Code completion for methods, type names, variables
+* kbd:[⌘+1] - Quick fix
+* kbd:[⌘+D] - Delete line.
+* kbd:[⌥+↑] - Move line up.
+* kbd:[⌥+↓] - Move line down.
+* kbd:[⌥+⌘+T] - Refactoring… (select menu item).
+* kbd:[⌥+⌘+R] - Quick rename.
+
+### Executing code
+
+* kbd:[⌥+⌘+X] - eXecute…
+** kbd:[J] - Java Application.
+** kbd:[T] - Test case.
+* kbd:[⌥+⇧+D] - Debug…
+** kbd:[J] - Java Application.
+** kbd:[T] - Test case.
+* kbd:[⌘+⇧+F11] - eXecute last launch configuration.
+* kbd:[⌘+F11] - Debug last launch configuration.
+
+### Miscellaneous
+** kbd:[⌘+3] - Quick access (to trigger almost any IDE functionality)
+
+[appendix]
+[[appendix.license]]
+## License
+image::https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png[link="http://creativecommons.org/licenses/by-nc-sa/4.0/"]

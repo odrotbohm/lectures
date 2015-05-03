@@ -1,7 +1,12 @@
 # Lecture scripts and slides
+:livebase: http://static.olivergierke.de/lectures
 
-This repository contains scripts, slide decks and some sample code for lectures I held.
+This repository contains scripts, slide decks and some sample code for lectures I held. The scripts are written in Asciidoc and rendered using http://asciidoctor.org[Asciidoctor]. Comments and suggestions for improvements are highly welcome. Feel free to open issues or submit a pull request.
 
 ## Software engineering labs
 
-* `spring-web-apps` - State-of-the art web applications with Java and Spring
+* `spring-web-apps` - link:{livebase}/spring-webapps[State-of-the art web applications with Java and Spring]
+
+## Software engineering
+
+* `java-tooling` - link:{livebase}/java-tooling[Java fundamentals and tooling]
