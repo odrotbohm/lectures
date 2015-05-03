@@ -27,13 +27,9 @@ This script should help you to get started with the fundamental tooling to suppo
 :numbered:
 [[prerequisites]]
 ## Infrastructure prerequisites
-* JDK -> current version 8 (http://www.oracle.com/technetwork/java/javase/downloads/index.html[Download SDK])
-* IDEs
-** https://eclipse.org/downloads/[Eclipse]
-** https://spring.io/tools/sts[STS] - Adds Spring Framework specific tooling
-** https://www.jetbrains.com/idea/download/[IntelliJ IDEA]
-** https://netbeans.org/downloads/[Netbeans]
-* Maven (optional) -> to execute the build at the command line (for continuous integration, release builds) (http://maven.apache.org/download.cgi[Download])
+* http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html[JDK 8]
+* https://eclipse.org/downloads/[Eclipse] / https://spring.io/tools/sts[STS] - Adds Spring Framework specific tooling
+* http://maven.apache.org/download.cgi[Maven] (optional) -> to execute the build at the command line (for continuous integration, release builds)
 
 [[quickstart]]
 ## Quick start
@@ -71,7 +67,7 @@ public static void main(String... args) {
 [[ide]]
 ## Eclipse
 
-Eclipse is an integrated development environment (IDE). It's primarily used for Java development but can be equipped with plugins to develop software in other languages as well.
+Eclipse is an integrated development environment (IDE). It's primarily used for Java development but can be equipped with plugins to develop software in other languages as well. Other IDEs available for Java development are https://www.jetbrains.com/idea/download/[IntelliJ IDEA] and https://netbeans.org/downloads/[Netbeans].
 
 [[ide.advantages]]
 ### Advantages of using an IDE
