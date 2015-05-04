@@ -121,13 +121,63 @@ A build system allows users to declare and configure individual elements of a bu
 [[build.maven.dependency-management]]
 #### Dependency management
 
-* Using libraries
-* How to include them into the project?
-* Defined logically (groupId:artifactId:version), resolved through so called repositories
-* Maven central
-* Local cache in `~/.m2/repository`
-* Includes binaries (JAR), sources, JavaDoc
-* IDE integration
+One of the primary factors of Java being the most widely used programming language in the world is the ecosystem of libraries available. Almost any kind of technical problem has an implemented solution available. So a Java application will - almost by definition - use quite a few of these already existing libraries.
+
+In the early days of Java these libraries had to be manually downloaded, put into the project and bundled with the application. These days, build systems provide means to logically define the dependencies of an application and take care of resolving the physical artifacts and packaging them with the application. The artifacts are held in a so called repository, the primary one to refer to being http://search.maven.org/[Maven Central].
+
+In a Maven project, dependencies are declared within a `<dependencies />` element in `pom.xml`:
+
+.Declaring dependencies in a Maven POM
+====
+[source, xml]
+----
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  …
+
+  <dependencies>
+    <dependency> <1>
+      <groupId>org.javamoney</groupId>
+      <artifactId>moneta</artifactId>
+      <version>1.0-RC3</version>
+    </dependency>
+  </dependencies>
+
+</project>
+----
+<1> Defines a dependency to the https://github.com/JavaMoney/jsr354-ri[Moneta] library.
+====
+
+A dependency is expressed by listing the group and artifact identifier alongside the versio of the library. The exact coordinates and available versions can be found by looking up the artifact in the http://search.maven.org/[Maven Central index].
+
+When the Maven build is run, the list of declared dependencies is consolidated and - if the physical artifacts are not available on the local machine already - obtained from the remote repsoitory and stored in the local repository. The repository is located in `~/.m2/repository`.
+
+.The structure of the local Maven repository
+====
+image::images/moneta-repository.png[]
+====
+
+As you can see the group identifier is expanded into folders, followed by a folder for the artifact identifier and one for the version. The repository not only contains the binary Java Archive (JAR) but also additional JARs for containing the sources and JavaDoc.
+
+[NOTE]
+====
+The sources and JavaDoc being present is caused by the IDE being configured to retrieve these additional artifacts. To enable this, check the Eclipse settings and enable "Download Artifact Sources" and "Download Artifact JavaDoc" in the section "Maven".
+
+image::images/eclipse-maven-sources.png[]
+====
+
+##### Transitive dependencies
+
+Maven dependencies can of course in turn have dependencies themselves. This creates a tree of dependencies that will all be resolved by Maven automatically. To get an impression of the structure of dependencies, open the `pom.xml` in Eclipse and select the "Dependency hierarchy" tab at the bottom of the editor.
+
+image::images/eclipse-maven-dependency-hierarchy.png[]
+
+As you can see, Moneta depends on `money-api` and `javax.annotation-api` in turn and the dependencies have been resolved. Also, we've declared another dependency to JUnit in version 4.12. We defined it to be a test scope dependency. This means it will not be available when compiling production code. Also it will not be packaged with the application as it's not needed at runtime but only for the execution of tests.
+
+TODO: complete
 
 [appendix]
 [[appendix.shortcuts]]
