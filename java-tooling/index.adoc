@@ -11,7 +11,7 @@ Oliver Gierke
 :toc:
 :livebase: http://static.olivergierke.de/lectures
 
-image:https://travis-ci.org/olivergierke/lectures.svg?branch=travis["Build Status", link="https://travis-ci.org/olivergierke/lectures"]
+image:https://travis-ci.org/olivergierke/lectures.svg?branch=master["Build Status", link="https://travis-ci.org/olivergierke/lectures"]
 
 :numbered!:
 [preface]
