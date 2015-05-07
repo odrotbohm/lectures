@@ -25,8 +25,8 @@ NOTE: Sections marked with this icon icon:lightbulb-o[] will define tasks that y
 [[intro.resources]]
 ### Resources
 
-* https://github.com/olivergierke/lectures[Script repository]
-* link:{livebase}/java-tooling[Script]
+* https://github.com/olivergierke/lectures[Script repository] - in case you want to file tickets for improvements.
+* link:{livebase}/java-tooling[Script] - the rendered version of it.
 
 :numbered:
 [[prerequisites]]
