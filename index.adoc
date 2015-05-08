@@ -1,0 +1,17 @@
+= TU Dresden lectures
+Oliver Gierke
+:revdate: {docdatetime}
+:sectids!:
+:sectanchors: true
+
+[[se]]
+== Software Engineering - Summer semester
+* link:overview/intro.pdf[Overview / Intro]
+* link:java-tooling/[Fundamentals of Java Tooling]
+* Frameworks and Libraries
+* Collaborative Software Development
+* Domain-Driven Design & JPA
+
+[[se-lab]]
+== Software Engineering Lab - Winter semester
+* link:spring-webapps/[Web applications with Java and Spring]
