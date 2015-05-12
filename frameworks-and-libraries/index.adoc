@@ -1,0 +1,51 @@
+= Frameworks and Libraries
+Oliver Gierke
+:revdate: {docdatetime}
+:revremark: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+:numbered:
+:experimental:
+:source-highlighter: prettify
+:sectids!:
+:sectanchors: true
+:icons: font
+:toc:
+:livebase: http://static.olivergierke.de/lectures
+:imagesdir: images
+
+== Introduction
+
+This script is supposed to give an overview about the concept of a library and a framework and distinguish one from another. We're going to look at JUnit as and example of a test framework and Spring as an example of a general purpose application framework.
+
+=== Frameworks VS. Libraries
+
+* Library: your coded uses the provided code (e.g. Google Guava, Spring JDBC)
+* Framework: the provided code uses your code (e.g. JUnit, Spring Framework)
+
+== JUnit -- a test framework
+
+JUnit is a Java based test framework that -- contrary to what its name implies -- can be used to write both unit tests and integration tests. Until version 3, it used an inheritance based approach for its user-facing API. That has unanimously been considered too invasive so that the current framework generation relies on annotations.
+
+=== Unit- VS. Integration tests
+
+Software can be tested on multiple levels of granularity: individual components can be tested in isolation, in the context of collaborating components. The entire system can be tested as a whole.
+
+The most fundamental approaches to testing are called unit tests. They rely on the component to be testable with a minimal amount of context available. It's usually desirable to use a class on its own, potentially replacing required collaborators with test mocks or stubs. To make sure the effort for that is manageable, this requires the class under test to be used in an isolated way.
+
+Thus writing unit tests for a component usually drives the design of that class to become more simple. The approach of writing test cases to drive the design of code is called Test Driven Design/Development (TDDfootnoteref:[tdd, Test-Driven Development - https://en.wikipedia.org/wiki/Test-driven_development[Wikipedia]])
+
+include::../spring-webapps/quickstart.adoc[leveloffset=+1]
+
+include::../spring-webapps/spring.adoc[leveloffset=+1]
+
+//== Injectables VS Newables
+
+// [CustomerManagement|register(firstname:String;lastname:String;birthday:LocalDate):Customer;findByLastname(lastname:String):Collection]<-.-[DefaultCustomerManagement], [DefaultCustomerManagement]->[CustomerRepository|save(customer:Customer):Customer;findByLastnameContainingIgnoreCase(lastname:String):Collection], [CustomerRepository]<-.-[JpaCustomerRepository], [CustomerRepository]<-.-[InMemoryCustomerRepository], [Customer|+firstname;+lastname;-birthday|getAge();isAdult()]
+== Sample class design
+image::types.png[]
+
+:numbered!:
+== Appendix
+
+[appendix]
+=== License
+image::https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png[link="http://creativecommons.org/licenses/by-nc-sa/4.0/"]

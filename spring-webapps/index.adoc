@@ -1,4 +1,4 @@
-# State-of-the-art web application development with Java and Spring
+= State-of-the-art web application development with Java and Spring
 Oliver Gierke
 :revdate: {docdatetime}
 :revremark: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -7,12 +7,13 @@ Oliver Gierke
 :source-highlighter: prettify
 :icons: font
 :toc:
+:imagesdir: images
 
 This documents summarizes the content of a lecture I held at TU Dresden in support of the Sofware Engineering Lab. It's primary goal is to ramp up the students with the very basics of Java web application development.
 
 :numbered!:
 [preface]
-## Introduction
+== Introduction
 
 The fundamental goals of the lecture are:
 
@@ -31,121 +32,24 @@ To round things off, we're briefly discussing continuous integration to make sur
 The source document for this script can be found in https://github.com/olivergierke/spring-webapps[this GitHub repository]. Feel free to create tickets for improvements or provide patches via pull requests.
 
 :numbered:
-## Infrastructure prerequisites
+[[infrastructure]]
+== Infrastructure prerequisites
 
 * JDK -> current version 8 (http://www.oracle.com/technetwork/java/javase/downloads/index.html[Download *SDK*])
 * Maven (optional) -> to execute the build at the command line (for continuous integration, release builds) (http://maven.apache.org/download.cgi[Download])
 * STS -> IDE, Spring flavored Eclipsefootnote:[Eclipse -- http://www.eclipse.org[Project website]], a standard Eclipse will do as well, but lacks some Spring-related support (https://spring.io/tools[Download])
 * Git -> version control (http://git-scm.com/downloads[Download])
 
-## Quick start
+include::quickstart.adoc[leveloffset=+1]
 
-### Objectives
+== Project dependencies and project build
 
-* Learn how to create, setup and run a Java based web project
-* Learn how to handle a web request
-* Learn how to efficiently work with web related code
-
-### Create a new project
-
-.IDE centric style
-
-1. Start STS.
-2. Create a new project menu:File[New… > Other] (or kbd:[⌘+N]).
-3. Select "Spring Starter Project".
-4. Keep settings (details on that below).
-5. Select "Web" in the Dependencies matrix.
-6. Select btn:[Finish].
-
-.Manual version
-
-1. Browse to http://start.spring.io.
-2. Keep settings (details on them below).
-3. Select "Web" in the Dependencies matrix.
-4. Select btn:[Generate project].
-5. Open up your IDE.
-6. In Eclipse select menu:File[Import…].
-7. Select "Existing Maven Projects".
-
-.The result
-The result should be a Java project created in the IDE looking something like this:
-
-image::images/project.png[]
-
-What do we have here?
-
-* `Application.java` in `src/main/java` - The main (startable) application class.
-* `static` / `templates` folders in `src/main/resources` - Folders for static resources and view templates.
-* `application.properties` - Configuration file.
-* `ApplicationTests.java` - Integration test to test the application.
-* `pom.xml` - The POM (Project Object Model). A Maven configuration file to control project setup, build and dependencies.
-
-### Add minimal functionality and run this thing
-
-* Create a new class, e.g. in the `demo` package: Select `src/main/java`, press kbd:[⌥+⌘+N], type `Class` or select menu:File[New… > Class] to bring up the new class wizard. Enter `demo` for the package name, `WelcomeController` as type name. Edit the created class to look like this:
-+
-.A simple Spring MVC controller
-====
-[source, java]
-----
-@RestController <1>
-class WelcomeController {
-
-    @RequestMapping("/welcome") <2>
-    String welcome() {
-        return "Welcome"; <3>
-    }
-}
-----
-<1> Causes the class to be found by the Spring container and turned into a Spring bean. This is not directly caused by `@RestController` but the annotation being meta-annotated with `@Controller` which is in turn annotated with `@Component`. See more on that in <<spring.building-blocks>>.
-<2> Maps `/welcome` to the execution of the annotated method. All HTTP request to that URI will cause the method to be invoked.
-<3> The result to be written to the response. Using `@RestController` causes the `String` returned to be considered the response payload.
-====
-
-[NOTE]
-====
-When pasting this code into your IDE it might already import the right types for you. In case it doesn't and you see red underlines e.g. under `@RestController` you have a variety of options:
-
-* Navigate to right after `@RestController` and hit kbd:[⌃+Space]. This will trigger code completion suggestions and either provide you with a drop down list to choose the type from (in case multiple ones matching what you typed are on the classpath).
-* Alternatively try kbd:[⌘+⇧+O] (Organize imports), which should try to resolve the type tokens you used.
-====
-
-* Execute `Application.java` (kbd:[⌥+⌘+X],kbd:[J] or right click the class, menu:Run As[Java Application]).
-* Browse to http://localhost:8080/welcome, should give you `Welcome`.
-
-TIP: Try using kbd:[⌘+Space] while typing here and there. Eclipse will usually provide you quite useful suggestions for code completion.
-
-### Make this a bit more dynamic
-
-TIP: If you run the application in debug mode, you can change method bodies on the fly without having to restart the app. We're going to use that mode going forward.
-
-* Change the method signature of the controller method to this:
-+
-[source, java]
-----
-welcome(@RequestParam(value = "name", defaultValue = "World") String name)
-----
-
-* Restart the application in debug mode (kbd:[⇧+⌥+D],kbd:[J] or menu:Debug As[Java Application]).
-* Browse to http://localhost:8080/welcome, output should be unchanged.
-* Change the URI to http://localhost:8080/welcome?name=Java, doesn't have any effect yet.
-* While the application is running, change the method body to:
-+
-[source, java]
-----
-return "Welcome ".concat(name).concat("!");
-----
-
-* Refresh the browser tab and the response should now adapt to changes of the `name` attribute.
-
-## Project dependencies and project build
-
-### Maven
+=== Maven
 
 * Open source project to build Java applications
 * Command line execution and IDE integration (to see the output of Maven related IDE activities in the console view, open up the Maven console by clicking the icon with the plus in the upper right).
 +
-image::images/maven-console.png[]
+image::maven-console.png[]
 * `pom.xml` as the central build configuration file
 +
 .A sample `pom.xml`
@@ -231,7 +135,7 @@ image::images/maven-console.png[]
 
 NOTE: Some changes (such as this one) need manual project refresh in Eclipse (kbd:[⌥+F5] or right-click the project, select menu:Maven[Update Project…]).
 
-### Project build
+=== Project build
 
 * The project build includes a certain set of steps, called lifecycle phases.
 * The most important ones are source compilation (both sources and test sources), test execution and application packaging.
@@ -302,7 +206,7 @@ Serendipity-:java-web-sample olivergierke $
 ----
 ====
 
-### Dependency management
+=== Dependency management
 
 * Logical definition of libraries that will be used by the project.
 * Artifact coordinates `$groupId:$artifactId:$version`.
@@ -310,7 +214,7 @@ Serendipity-:java-web-sample olivergierke $
 TIP: To see the current list of dependencies unfold the Maven Dependencies node in the project tree in Eclipse. Alternatively run `mvn dependency:list -Dsort` in on the command line.
 
 * In the current state the output of the command should look something like this:
-
++
 .Listing dependencies of a Maven project
 ====
 ----
@@ -369,12 +273,11 @@ Serendipity:java-web-sample olivergierke $
 </dependency>
 ----
 ====
-
-[NOTE]
-====
-Spring Boot will detect the JPA dependencies on the classpath and set up some default configuration for the persistence. Thus, if you try to run the application with that dependency added it will complain about a database missing. For now, add the following additional dependency to keep the application bootstrapable.
-
++
+NOTE: Spring Boot will detect the JPA dependencies on the classpath and set up some default configuration for the persistence. Thus, if you try to run the application with that dependency added it will complain about a database missing. For now, add the following additional dependency to keep the application bootstrapable.
++
 .Dependeny declaration for the HSQL in-memory database
+====
 [source, xml]
 ----
 <dependency>
@@ -383,6 +286,7 @@ Spring Boot will detect the JPA dependencies on the classpath and set up some de
 </dependency>
 ----
 ====
+
 
 * Re-run `mvn dependency:list -Dsort`
 +
@@ -441,120 +345,11 @@ Serendipity:java-web-sample olivergierke $
 * Note, how the list of dependencies changed and an entire set of new dependencies has been added due to the declaration of that single logical dependency.
 * Spring Boot takes care of providing a consistent set of dependencies for fundamental application aspects. Also, it takes away the need to declare version numbers for those dependencies to make sure they work with each other.
 
-[[spring]]
-## Spring application development
+include::spring.adoc[leveloffset=+1]
 
-[[spring.building-blocks]]
-### Fundamental building blocks of a Spring application
+=== Data access with Spring and JPA
 
-* *Application code* -- code you write, e.g. the `WelcomeController` in the quick start example
-* *Configuration* -- code to configure the application container. Declares references to infrastructure components (e.g. the database, security) and defines how application components are found:
-+
-.An example configuration class
-====
-[source, java]
-----
-@Configuration <1>
-@EnableAutoConfiguration <2>
-@ComponentScan <3>
-class Application { … }
-----
-<1> Declares the class to be a configuration class.
-<2> Enables Spring Boot's auto-configuration mechanism.
-<3> Enables application component scanning for the package the current class resides in (tweakable through attributes omn the annotation).
-====
-* *The application container* - Started by `SpringApplication.run(…)` in the main method or using `@RunWith(…)` and `@SpringApplication` in test cases (see `ApplicationTests` in the quick start section), inspects the given configuration and starts a Spring `ApplicationContext`. What exactly that means is depending on the configuration as well as the classpath.
-
-.Spring Boot auto-configuration
-****
-The `@EnableAutoConfiguration` annotation triggers Spring Boot's inspection of the classpath and application configuration to enable defaults. This causes the embedded web server being started (due to the web starter being a dependency) and the JPA infrastructure being configured (due to the JPA starter being a dependency).
-****
-
-### Running a Spring application
-
-[[spring.bootstrap.standalone]]
-#### Standalone
-
-* From within the IDE it's sufficient execute the main application class.
-* On the command line, run `mvn clean package` and run the JAR (Java application ARchive) using `java -jar target/*.jar`. You can basically take the JAR created by the build and run that on any machine that has Java installed.
-
-[[spring.bootstrap.integration-tests]]
-#### In integration tests
-
-* Test cases are usually executed by an open-source library called http://junit.org[JUnit] which has both Maven and Eclipse integration.
-* To bootstrap the application container in an integration test the test class has to look as follows:
-+
-.Bootstrapping the Spring container from an integration test
-====
-[source, java]
-----
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-class ApplicationTests { … }
-----
-====
-* `@RunWith(…)` tells JUnit to give Spring the control over the test execution.
-* `@SpringApplicationConfiguration` configures which configuration class shall be bootstrapped.
-
-### Application components
-
-* Application components are usually identified by an annotation that is either `@Component` or an annotation annotated with `@Component` in turn (e.g. `@Service`).
-
-* The component classes are discovered at bootstrap time and a single instance is created.
-+
-.A simple application component
-====
-[source, java]
-----
-@Component
-class MyApplicationComponent {}
-----
-====
-
-* If a component needs other components to work with (e.g. the web controller needs access to the component implementing data access), the component required can be injected into the depending component by using a constructor annotated with `@Autowired`.
-+
-.A simple component with a dependency
-====
-[source, java]
-----
-@Component
-class MyDependingComponent {
-
-  private final MyApplicationComponent dependency;
-
-  @Autowired
-  public MyDependingComponent(MyApplicationComponent dependency) {
-    this.dependency = dependency;
-  }
-}
-----
-====
-
-* If a component depended on cann not be found in the container, an exception is thrown:
-+
-.A Spring exception indicating a component cannot be found
-====
-----
-Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [demo.MyApplicationComponent] found for dependency: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {}
-  at o.s.b.f.s.DefaultListableBeanFactory.raiseNoSuchBeanDefinitionException(…:1118)
-  at o.s.b.f.s.DefaultListableBeanFactory.doResolveDependency(…:967)
-  at o.s.b.f.s.DefaultListableBeanFactory.resolveDependency(…:862)
-  at o.s.b.f.s.ConstructorResolver.resolveAutowiredArgument(…:811)
-  at o.s.b.f.s.ConstructorResolver.createArgumentArray(…:739)
-  ... 42 common frames omitted
-----
-====
-
-[NOTE]
-====
-When using STS, classes that are Spring components carry a little S-overlay on the icon:
-
-image::images/sts-components.png[]
-====
-
-### Data access with Spring and JPA
-
-#### Fundamentals of Java persistence
+==== Fundamentals of Java persistence
 
 * Most commonly used type of persistent stores these days are relational databases.
 * JPAfootnote:[Java Persistence API (JPA) - http://en.wikipedia.org/wiki/Java_Persistence_API[Wikipedia]] is a standard to define the aspects of mapping Java objects to relational database and how to store into the database and retrieve objects from it in turn.
@@ -562,7 +357,7 @@ image::images/sts-components.png[]
 ** *Entity* - a domain concept with identity and a certain lifecycle (can be created, updated, deleted etc.).
 ** *Repository* - an application component simulating a collection of aggregate roots (a special kind of entity). Usually backed by some persistence mechanism.
 
-#### Entity mapping
+==== Entity mapping
 
 * Entity ytpes are equipped with JPA annotations to customize the mapping to the database, declaring ids etc.
 +
@@ -584,7 +379,7 @@ public class GuestbookEntry {
 ----
 ====
 
-#### Spring Data JPA
+==== Spring Data JPA
 
 * Defines a programming model to ease the implementation of repositories.
 * Support for CRUDfootnote:[Create, Read, Update, Delete (CRUD) -- http://en.wikipedia.org/wiki/Create,_read,_update_and_delete[Wikipedia]] operations, query methods, predicate executions.
@@ -602,9 +397,9 @@ interface Guestbook extends CrudRepository<GuestbookEntry, Long> {
 
 * Interfaces are automatically detected by Spring Boot and can be `@Autowired` into clients.
 * CRUD operations available through `CrudRepository`.
-* Query methods follow a naming convention (see the http://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-creation[reference documentation] for details).
+* Query methods follow a naming convention (see the http://docs.spring.io/spring-data/jpa/docs/current/reference/html/=repositories.query-methods.query-creation[reference documentation] for details).
 
-##### Writing test cases
+===== Writing test cases
 
 * Create an integration test class (see <<spring.bootstrap.integration-tests, the section on testing>> for fundamentals).
 * Mark the test class with `@Transactional` to automatically roll back changes in the database after each test method.
@@ -639,13 +434,13 @@ public class GuestbookIntegrationTest {
 ----
 ====
 
-### Spring MVC
+=== Spring MVC
 
-#### MVC fundamentals
+==== MVC fundamentals
 
 * Architectural pattern to implement user interfaces.footnote:[Model View Controller (MVC) Pattern -- http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller[Wikipedia]]
 
-#### Spring MVC controllers
+==== Spring MVC controllers
 
 * A controller is the central concept within Spring MVC. Accepts requests, delegates to business logic and returns either a view name and model or an object to be marshalled as e.g. JSON or XML.
 +
@@ -672,14 +467,14 @@ class GuestbookController {
 ----
 <1> Declares the class as a controller (so that Spring MVC picks it up).
 <2> `@RequestMapping` allows to bind requests (via path, HTTP method, headers etc.) to method executions.
-<3> Annotations on method parameters allow to bind aspects of the request to the method execution: `@RequestParam`, `@PathVariable`. Some types are supported without annotations (see the http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html#mvc-ann-arguments[reference documentation] for details).
+<3> Annotations on method parameters allow to bind aspects of the request to the method execution: `@RequestParam`, `@PathVariable`. Some types are supported without annotations (see the http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html=mvc-ann-arguments[reference documentation] for details).
 ====
 
 * Controller methods return value depends on mode of operation:
 ** REST web service (you want to server JSON/XML): return a domain object, either annotate method with `@ResponseBody` or the controller with `@RestController`.
 ** A website (through a template engine): return a `String` and thus trigger view resolution (see next section).
 
-#### Natural view templates with Thymeleaf
+==== Natural view templates with Thymeleaf
 
 * http://www.thymeleaf.org/[Thymeleaf] is the state-of-the art template engine to render HTML views.
 * Supports so called natural templating, i.e. the template is a valid (and viewable) HTML page that contains directives that trigger content replacement on rendering.
@@ -687,7 +482,7 @@ class GuestbookController {
 * Supports partial rendering by using a special view name syntax: `$viewName :: $fragmentName` (see the `th:fragment="entry"` in the guestbook template).
 
 [[continuous-integration]]
-## Continuous integration with Travis
+== Continuous integration with Travis
 
 * Create account at http://travis-ci.org[Travis] (it's free!).
 * Look up your repository and activate the CI job.
@@ -706,17 +501,17 @@ jdk:
 * Push that change to the repository and watch Travis kicking off a build of your project.
 
 :numbered!:
-## Appendix
+== Appendix
 
 [appendix]
-### Recommended guides
+=== Recommended guides
 
 * https://spring.io/guides/gs/serving-web-content/[Serving web content with Spring MVC]
 * https://spring.io/guides/gs/accessing-data-jpa/[Accessing relational data with JPA]
 * https://spring.io/guides/gs/securing-web/[Securing a web application]
 
 [appendix]
-### General best practices
+=== General best practices
 
 .Create work items (tickets) and reference the item from the commit message
 This will allow you to trace which code has been written and changed for what reason.
@@ -728,7 +523,7 @@ Writing test cases will not only reduce the number of bugs you introduce while w
 It's considered good practice to not break the build as you might block your team mates, if they update the code and all of a sudden cannot bootstrap the container anymore. Even better, set up continuous integration as described in <<continuous-integration>>.
 
 [appendix]
-### Resources
+=== Resources
 
 * https://github.com/st-tu-dresden/guestbook[The Guestbook sample application].
 * http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle[Spring Boot reference documentation]
@@ -738,5 +533,5 @@ It's considered good practice to not break the build as you might block your tea
 * http://projects.spring.io/spring-boot[Spring Boot project home]
 
 [appendix]
-### License
+=== License
 image::https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png[link="http://creativecommons.org/licenses/by-nc-sa/4.0/"]

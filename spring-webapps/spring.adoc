@@ -1,0 +1,122 @@
+[[spring]]
+= Spring -- An application framework
+:imagesdir: images
+
+Springfootnoteref:[spring, Spring - https://en.wikipedia.org/wiki/Spring_Framework[Wikipedia]] is an open-source, general purpose, Java-based application framework. Parts of it can be used as a library but at the very core of it it's an inversion-of-controlfootnoteref:[ioc, Inversion of Control - https://en.wikipedia.org/wiki/Inversion_of_control[Wikipedia]] container which allows you to write easy to test application components.
+
+Beyond that it provides means to apply technical services (e.g. transactions and security) in a declarative and portable way, integrations with persistence and integration technologies as well as a n MVC web framework.
+
+[[spring.ioc]]
+== Inversion of Control
+Inversion of Control (otherwise also referred to as Dependency Injection) is the software design technique that frees a component from the task to look up its collaborateurs and rather get those handed into the component – usually as constructor arguments. This inverts the control the control about this lookup from the component itself to its context (hence the name). The assembly of a component is externalized and usually taken care of by a generic framework but can -- and almost always is -- also be used manually e.g. in test cases.
+
+This approach especially improves testability of components as the collaborateurs that would be used in a production environment can easily be replaced with test components.
+
+[[spring.building-blocks]]
+== Fundamental building blocks of a Spring application
+
+* *Application code* -- code you write, e.g. the `WelcomeController` in the quick start example
+* *Configuration* -- code to configure the application container. Declares references to infrastructure components (e.g. the database, security) and defines how application components are found:
++
+.An example configuration class
+====
+[source, java]
+----
+@Configuration <1>
+@EnableAutoConfiguration <2>
+@ComponentScan <3>
+class Application { … }
+----
+<1> Declares the class to be a configuration class.
+<2> Enables Spring Boot's auto-configuration mechanism.
+<3> Enables application component scanning for the package the current class resides in (tweakable through attributes omn the annotation).
+====
+* *The application container* - Started by `SpringApplication.run(…)` in the main method or using `@RunWith(…)` and `@SpringApplication` in test cases (see `ApplicationTests` in the quick start section), inspects the given configuration and starts a Spring `ApplicationContext`. What exactly that means is depending on the configuration as well as the classpath.
+
+.Spring Boot auto-configuration
+****
+The `@EnableAutoConfiguration` annotation triggers Spring Boot's inspection of the classpath and application configuration to enable defaults. This causes the embedded web server being started (due to the web starter being a dependency) and the JPA infrastructure being configured (due to the JPA starter being a dependency).
+****
+
+== Running a Spring application
+
+[[spring.bootstrap.standalone]]
+=== Standalone
+
+* From within the IDE it's sufficient execute the main application class.
+* On the command line, run `mvn clean package` and run the JAR (Java application ARchive) using `java -jar target/*.jar`. You can basically take the JAR created by the build and run that on any machine that has Java installed.
+
+[[spring.bootstrap.integration-tests]]
+=== In integration tests
+
+* Test cases are usually executed by an open-source library called http://junit.org[JUnit] which has both Maven and Eclipse integration.
+* To bootstrap the application container in an integration test the test class has to look as follows:
++
+.Bootstrapping the Spring container from an integration test
+====
+[source, java]
+----
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Application.class)
+class ApplicationTests { … }
+----
+====
+* `@RunWith(…)` tells JUnit to give Spring the control over the test execution.
+* `@SpringApplicationConfiguration` configures which configuration class shall be bootstrapped.
+
+== Application components
+
+* Application components are usually identified by an annotation that is either `@Component` or an annotation annotated with `@Component` in turn (e.g. `@Service`).
+
+* The component classes are discovered at bootstrap time and a single instance is created.
++
+.A simple application component
+====
+[source, java]
+----
+@Component
+class MyApplicationComponent {}
+----
+====
+
+* If a component needs other components to work with (e.g. the web controller needs access to the component implementing data access), the component required can be injected into the depending component by using a constructor annotated with `@Autowired`.
++
+.A simple component with a dependency
+====
+[source, java]
+----
+@Component
+class MyDependingComponent {
+
+  private final MyApplicationComponent dependency;
+
+  @Autowired
+  public MyDependingComponent(MyApplicationComponent dependency) {
+    this.dependency = dependency;
+  }
+}
+----
+====
+
+* If a component depended on cann not be found in the container, an exception is thrown:
++
+.A Spring exception indicating a component cannot be found
+====
+----
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [demo.MyApplicationComponent] found for dependency: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {}
+  at o.s.b.f.s.DefaultListableBeanFactory.raiseNoSuchBeanDefinitionException(…:1118)
+  at o.s.b.f.s.DefaultListableBeanFactory.doResolveDependency(…:967)
+  at o.s.b.f.s.DefaultListableBeanFactory.resolveDependency(…:862)
+  at o.s.b.f.s.ConstructorResolver.resolveAutowiredArgument(…:811)
+  at o.s.b.f.s.ConstructorResolver.createArgumentArray(…:739)
+  ... 42 common frames omitted
+----
+====
+
+[NOTE]
+====
+When using STS, classes that are Spring components carry a little S-overlay on the icon:
+
+image::sts-components.png[]
+====
+

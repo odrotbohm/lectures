@@ -1,2 +1,6 @@
 images/graphics/*.png
+.classpath
+.project
+target/
+.settings/
 *.html

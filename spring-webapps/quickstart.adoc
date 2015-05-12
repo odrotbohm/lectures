@@ -1,0 +1,106 @@
+[[quickstart]]
+= A Java web application -- Quick start
+:imagesdir: images
+
+[[quickstart.objectives]]
+== Objectives
+
+* Learn how to create, setup and run a Java based web project
+* Learn how to handle a web request
+* Learn how to efficiently work with web related code
+
+[[quickstart.create-project]]
+== Create a new project
+
+.IDE centric style
+
+1. Start STS.
+2. Create a new project menu:File[New… > Other] (or kbd:[⌘+N]).
+3. Select "Spring Starter Project".
+4. Keep settings (details on that below).
+5. Select "Web" in the Dependencies matrix.
+6. Select btn:[Finish].
+
+.Manual version
+
+1. Browse to http://start.spring.io.
+2. Keep settings (details on them below).
+3. Select "Web" in the Dependencies matrix.
+4. Select btn:[Generate project].
+5. Open up your IDE.
+6. In Eclipse select menu:File[Import…].
+7. Select "Existing Maven Projects".
+
+.The result
+The result should be a Java project created in the IDE looking something like this:
+
+image::project.png[]
+
+What do we have here?
+
+* `Application.java` in `src/main/java` - The main (startable) application class.
+* `static` / `templates` folders in `src/main/resources` - Folders for static resources and view templates.
+* `application.properties` - Configuration file.
+* `ApplicationTests.java` - Integration test to test the application.
+* `pom.xml` - The POM (Project Object Model). A Maven configuration file to control project setup, build and dependencies.
+
+[[quickstart.minimal-functionality]]
+== Add minimal functionality and run this thing
+
+* Create a new class, e.g. in the `demo` package: Select `src/main/java`, press kbd:[⌥+⌘+N], type `Class` or select menu:File[New… > Class] to bring up the new class wizard. Enter `demo` for the package name, `WelcomeController` as type name. Edit the created class to look like this:
++
+.A simple Spring MVC controller
+====
+[source, java]
+----
+@RestController <1>
+class WelcomeController {
+
+    @RequestMapping("/welcome") <2>
+    String welcome() {
+        return "Welcome"; <3>
+    }
+}
+----
+<1> Causes the class to be found by the Spring container and turned into a Spring bean. This is not directly caused by `@RestController` but the annotation being meta-annotated with `@Controller` which is in turn annotated with `@Component`. See more on that in <<spring.building-blocks>>.
+<2> Maps `/welcome` to the execution of the annotated method. All HTTP request to that URI will cause the method to be invoked.
+<3> The result to be written to the response. Using `@RestController` causes the `String` returned to be considered the response payload.
+====
+
+[NOTE]
+====
+When pasting this code into your IDE it might already import the right types for you. In case it doesn't and you see red underlines e.g. under `@RestController` you have a variety of options:
+
+* Navigate to right after `@RestController` and hit kbd:[⌃+Space]. This will trigger code completion suggestions and either provide you with a drop down list to choose the type from (in case multiple ones matching what you typed are on the classpath).
+* Alternatively try kbd:[⌘+⇧+O] (Organize imports), which should try to resolve the type tokens you used.
+====
+
+* Execute `Application.java` (kbd:[⌥+⌘+X],kbd:[J] or right click the class, menu:Run As[Java Application]).
+* Browse to http://localhost:8080/welcome, should give you `Welcome`.
+
+TIP: Try using kbd:[⌘+Space] while typing here and there. Eclipse will usually provide you quite useful suggestions for code completion.
+
+[[quickstart.dynamics]]
+== Make this a bit more dynamic
+
+TIP: If you run the application in debug mode, you can change method bodies on the fly without having to restart the app. We're going to use that mode going forward.
+
+* Change the method signature of the controller method to this:
++
+[source, java]
+----
+welcome(@RequestParam(value = "name", defaultValue = "World") String name)
+----
+
+* Restart the application in debug mode (kbd:[⇧+⌥+D],kbd:[J] or menu:Debug As[Java Application]).
+* Browse to http://localhost:8080/welcome, output should be unchanged.
+* Change the URI to http://localhost:8080/welcome?name=Java, doesn't have any effect yet.
+* While the application is running, change the method body to:
++
+[source, java]
+----
+return "Welcome ".concat(name).concat("!");
+----
+
+* Refresh the browser tab and the response should now adapt to changes of the `name` attribute.
+
