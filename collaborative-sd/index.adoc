@@ -49,16 +49,14 @@ They're usually used to track source code and related artifacts.
 VCS allow keeping track of who changed what and why by introducing the notion of a commit, a set of changes to the repository attributed to an author and a textual description of the change.
 The most prominent VCS these days is Gitfootnoteref:[git, Git - https://git-scm.com/[Website]], but other systems like Mercurial, SVN, CVS, ClearCase or Perforce might cross your paths.
 
+[[version-control.git]]
+### Git
 
-- Collaboratively remotely edit files
-- Change management
-- Capture content as a "list of changes"
+Git is a distributed version control system brought to life by Linus Torvalds.
+In Git commits are identified by a SHA-1 and refer back to their ancestor commits.
 
 .Git changes
 image::git-changes.png[]
-
-[[version-control.git]]
-### Git
 
 [[version-control.git.quickstart]]
 #### Quickstart
@@ -96,6 +94,25 @@ Date:   Wed Jun 3 13:57:07 2015 +0200
 <7> Show the changes in the repository.
 
 At this point we have made and commited changes to the local repository.
+
+[[version-control.git.branches]]
+#### Branches
+Chains of commits form so called branches. Branches are created for a variety of purposes:
+
+- *Feature branches* -- these rather short lived branches are created temporarily to isolate independently ongoing work from one another. They allow to control the point of integration of distinct development streams. As merging (see <<github.merges>>) them back together becomes more complicated the more they diverge from each other, care has to be taken to regularly rebase them and keeping the features small.
+- *Maintenance branches* -- these rather long lived branches are used to separate pure maintenance work from ongoing development that might introduce new features. Maintenance branches are used in Software Configuration Managementfootnoteref:[scm, Software Configuration Management -- http://en.wikipedia.org/wiki/Software_configuration_management[Wikipedia]] (SCM) to manage the release and maintenance of different versions of a piece of software.
+
+[[version-control.git.branches-screenshot]]
+.The commit history of http://www.st.inf.tu-dresden.de/SalesPoint[Salespoint] in GitX
+image::git-branches.png[]
+
+The screenshot above shows the commit history of the http://www.st.inf.tu-dresden.de/SalesPoint[Salespoint] library in the MacOS Git UI client GitX (read more on Git UI tools in <<version-control.git.tools>>).
+Each row in the main view represents a single commit: its SHA-1 hash, the commit message summary, the author as well as the date of the commit.
+The colored labels represent branches (orange: currently checked out branch, green: other local branches, blue: remote branches (see <<version-control.git.remote-repositories>> for details)) or tags (yellow).
+A tag is a reference to a particular state of the repository and usually used to indicate the commit that has been used to craft a release of a piece of software.
+
+As you can see, commit `dc8a944` has two subsequent commits `feb119c` and `1c8ed65`. `dc8a944` is the point where the `6.1.x` branch was branched of the main development line.
+It's not by accident that this is also the commit that's tagged with `6.1.0.RELEASE` as it maks the starting point of the maintenance branch, which has seen a bugfix release in commit `96105b8`.
 
 [[version-control.git.remote-repositories]]
 #### Interacting with a remote repository
@@ -191,9 +208,15 @@ Generally speaking it's preferable to organize work -- and thus the code -- into
 - *Create issues per task* -- to be able to keep track of which changes relate to which task it's best to create tickets for each of them. This allows you to refer to these tasks using the ticket identifiers.
 - *Make sure changes in a commit / PR only target one task* -- Keeping track of which changes were made for which reason is significantly harder if a commit contains changes that relate to multiple tickets. Try to focus on changes for a dedicated task and commit early and often.
 - *Create a feature branch per issue* -- To be able to switch tasks and keep the commit history of the master branch clean create feature branches that contain commits related to a particular ticket.
-- *Keep feature branches small and short-lived* -- make sure, feature branches live for very limited time and don't contain too many changes as they increase the probability for merge conflicts to occur. If you find yourself with huge changes in a feature branch, you might wanna rethink the granularity of tasks. Feature branches shouldn't live for more than a couple of days.
-- *Good commit messages* -- the only way for your colleagues to understand the reasoning behind a commit is reading the commit messages. Thus a "changed something" isn't incredibly helpful. Describe what you changed and -- even more importantly -- why you changed what on a high level.
-- *Refer to tickets from the code and commit message* -- GitHub detects ticket references (i.e. `#4711`) and links them from the tickets. It even supports keywords like `fixes` to automatically resolve a ticket when pushing the commit.
+- *Keep feature branches small and short-lived* -- make sure, feature branches live for very limited time and don't contain too many changes as they increase the probability for merge conflicts to occur.
+If you find yourself with huge changes in a feature branch, you might wanna rethink the granularity of tasks.
+Feature branches shouldn't live for more than a couple of days.
+- *Good commit messages* -- the only way for your colleagues to understand the reasoning behind a commit is reading the commit messages.
+Thus a "changed something" isn't incredibly helpful.
+Describe what you changed and -- even more importantly -- why you changed what on a high level.
+- *Refer to tickets from the code and commit message* -- GitHub detects ticket references (i.e. `#4711`) and links them from the tickets.
+It even supports keywords like `fixes` to automatically resolve a ticket when pushing the commit.
+An example of this can be seen in the lower third of the screenshot in <<version-control.git.branches-screenshot>>.
 
 [[ci]]
 ## Continuous integration
@@ -279,3 +302,24 @@ GitHub supports Asciidoc out of the box and automatically renders Asciidoc files
 image::asciidoc-readme.png[]
 
 Last but not least documentation can be rendered during the project build as plugins for Java build systems (Maven, Gradle) exist.
+
+## Recommendations from the Twittersphere
+
+See https://twitter.com/olivergierke/status/606050631653183488[this conversation] for all replies.
+
+[quote, Oliver Gierke – @olivergierke]
+If you had to teach newbies 2 or three fundamental technical things about collaborative software development, what would that be?
+
+[quote, Daniel Barth – @devkiela]
+Technically I would say DVCS/social coding and reproducible builds/dependency mngmt. And TDD of course to not break things.
+
+[quote, Gerrit Meier - @meistermeier]
+Commit (and push) often / keep changes from master in sync to avoid the merge day / learn command line first.
+
+[quote, Jochen Mader - @codepitbull]
+If stuck on a problem for longer than 30 minutes ASK!!!!
+
+[quote, Markus Tacker - @coderbyheart]
+Ask until you really understand the problem.
+Learn to give constructive feedback.
+You don't own the code but the team does.
