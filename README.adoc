@@ -12,3 +12,4 @@ This repository contains scripts, slide decks and some sample code for lectures 
 ## Software engineering
 
 * `java-tooling` - link:{livebase}/java-tooling[Java fundamentals and tooling]
+* `collaborative-sd` - link:{livebase}/collaborative-sd[Fundamentals of Collaborative Software Development]

@@ -8,8 +8,8 @@ Oliver Gierke
 == Software Engineering - Summer semester
 * link:overview/intro.pdf[Overview / Intro]
 * link:java-tooling/[Fundamentals of Java Tooling]
+* link:collaborative-sd/[Collaborative Software Development]
 * Frameworks and Libraries
-* Collaborative Software Development
 * Domain-Driven Design & JPA
 
 [[se-lab]]
