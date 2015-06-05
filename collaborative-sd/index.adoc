@@ -303,6 +303,7 @@ image::asciidoc-readme.png[]
 
 Last but not least documentation can be rendered during the project build as plugins for Java build systems (Maven, Gradle) exist.
 
+[[recommendations]]
 ## Recommendations from the Twittersphere
 
 See https://twitter.com/olivergierke/status/606050631653183488[this conversation] for all replies.
