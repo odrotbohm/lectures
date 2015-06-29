@@ -9,7 +9,7 @@ Oliver Gierke
 * link:overview/intro.pdf[Overview / Intro]
 * link:java-tooling/[Fundamentals of Java Tooling]
 * link:collaborative-sd/[Collaborative Software Development]
-* Frameworks and Libraries
+* link:frameworks-and-libraries/[Frameworks and Libraries]
 * Domain-Driven Design & JPA
 
 [[se-lab]]
