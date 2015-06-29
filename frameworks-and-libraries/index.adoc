@@ -12,19 +12,23 @@ Oliver Gierke
 :livebase: http://static.olivergierke.de/lectures
 :imagesdir: images
 
+[[intro]]
 == Introduction
 
 This script is supposed to give an overview about the concept of a library and a framework and distinguish one from another. We're going to look at JUnit as and example of a test framework and Spring as an example of a general purpose application framework.
 
+[[intro.frameworks-vs-libraries]]
 === Frameworks VS. Libraries
 
 * Library: your coded uses the provided code (e.g. Google Guava, Spring JDBC)
 * Framework: the provided code uses your code (e.g. JUnit, Spring Framework)
 
+[[junit]]
 == JUnit -- a test framework
 
 JUnit is a Java based test framework that -- contrary to what its name implies -- can be used to write both unit tests and integration tests. Until version 3, it used an inheritance based approach for its user-facing API. That has unanimously been considered too invasive so that the current framework generation relies on annotations.
 
+[[junit.unit-vs-integration-tests]]
 === Unit- VS. Integration tests
 
 Software can be tested on multiple levels of granularity: individual components can be tested in isolation, in the context of collaborating components. The entire system can be tested as a whole.
