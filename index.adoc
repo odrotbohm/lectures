@@ -10,7 +10,7 @@ Oliver Gierke
 * link:java-tooling/[Fundamentals of Java Tooling]
 * link:collaborative-sd/[Collaborative Software Development]
 * link:frameworks-and-libraries/[Frameworks and Libraries]
-* Domain-Driven Design & JPA
+* link:ddd-and-spring/[Domain-Driven Design and Spring]
 
 [[se-lab]]
 == Software Engineering Lab - Winter semester
