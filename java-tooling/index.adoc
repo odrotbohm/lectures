@@ -114,7 +114,16 @@ A build system allows users to declare and configure individual elements of a bu
 [[build.maven]]
 ### Maven
 
-Maven is currently the predominant tool to build Java based software projects. It's centered around the notion of a Project Object Model (POM) to describe the project, its dependencies and which steps shall be executed during the build.
+https://maven.apache.org[Maven] is currently the predominant tool to build Java based software projects. It's centered around the notion of a Project Object Model (POM) to describe the project, its dependencies and which steps shall be executed during the build.
+
+[NOTE]
+====
+You can install maven by either
+
+* downloading it from the official https://maven.apache.org/download.cgi[website]
+* with https://brew.sh[homebrew] if you're using Mac OSX. Simply run `brew install maven` on the command line
+* or you favorite linux package manager (search for `maven`)
+====
 
 The build execution is backed by a so called https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html[lifecycle] which is basically a predefined set of steps to be executed sequentially. Depending on the type of project that's being built a set of default plugins is assigned to the individual steps. Here's an incomplete list of the most important lifecycle phases:
 
@@ -172,7 +181,7 @@ $
 ----
 ====
 
-If you'd like to see the build in action for a real-world project that produces a bit more output, you can try this (requires Git and Maven installed on your machine).
+If you'd like to see the build in action for a real-world project that produces a bit more output, you can try this (requires https://git-scm.com[Git] and Maven installed on your machine).
 
 [source, bash]
 ----
