@@ -58,6 +58,12 @@ In Git commits are identified by a SHA-1 and refer back to their ancestor commit
 .Git changes
 image::git-changes.png[]
 
+https://git-scm.com[Git] can be installed by downloading the binaries from the project website or like this:
+
+- Mac OSX (https://brew.sh[Homebew]): `brew install git`.
+- Linux: `apt-get install -y git` or your preferred package manager.
+- Windows (and any other): Download from the http://git-scm.com/downloads[website].
+
 [[version-control.git.quickstart]]
 #### Quickstart
 
