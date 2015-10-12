@@ -134,6 +134,17 @@ $ git pull origin master <3>
 [[version-control.git.tools]]
 #### Tools
 
+- https://git-scm.com[Git]
++
+for Linux and Mac via package manager on the command line
++
+Mac OSX (https://brew.sh[homebew])::
+`brew install git`
+Linux::
+`apt-get install -y git` or your preferred package manager
+Windows (and any other)::
+Download from the http://git-scm.com/downloads[website]
+
 - https://git-scm.com/downloads/guis[GUI clients overview]
 - GitHub for http://mac.github.com[Mac] / http://windows.github.com/[Windows]
 - https://www.sourcetreeapp.com/[SourceTree]
