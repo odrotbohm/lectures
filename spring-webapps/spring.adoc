@@ -4,13 +4,13 @@
 
 Springfootnoteref:[spring, Spring - https://en.wikipedia.org/wiki/Spring_Framework[Wikipedia]] is an open-source, general purpose, Java-based application framework. Parts of it can be used as a library but at the very core of it it's an inversion-of-controlfootnoteref:[ioc, Inversion of Control - https://en.wikipedia.org/wiki/Inversion_of_control[Wikipedia]] container which allows you to write easy to test application components.
 
-Beyond that it provides means to apply technical services (e.g. transactions and security) in a declarative and portable way, integrations with persistence and integration technologies as well as a n MVC web framework.
+Beyond that it provides means to apply technical services (e.g. transactions and security) in a declarative and portable way, integrations with persistence and integration technologies as well as an MVC web framework.
 
 [[spring.ioc]]
 == Inversion of Control
-Inversion of Control (otherwise also referred to as Dependency Injection) is the software design technique that frees a component from the task to look up its collaborateurs and rather get those handed into the component – usually as constructor arguments. This inverts the control the control about this lookup from the component itself to its context (hence the name). The assembly of a component is externalized and usually taken care of by a generic framework but can -- and almost always is -- also be used manually e.g. in test cases.
+Inversion of Control (otherwise also referred to as Dependency Injection) is the software design technique that frees a component from the task to look up its collaborators and rather get those handed into the component – usually as constructor arguments. This inverts the control of this lookup from the component itself to its context (hence the name). The assembly of a component is externalized and usually taken care of by a generic framework but can -- and almost always is -- also be used manually e.g. in test cases.
 
-This approach especially improves testability of components as the collaborateurs that would be used in a production environment can easily be replaced with test components.
+This approach especially improves testability of components as the collaborators that would be used in a production environment can easily be replaced with test components.
 
 [[spring.building-blocks]]
 == Fundamental building blocks of a Spring application
@@ -29,9 +29,9 @@ class Application { … }
 ----
 <1> Declares the class to be a configuration class.
 <2> Enables Spring Boot's auto-configuration mechanism.
-<3> Enables application component scanning for the package the current class resides in (tweakable through attributes omn the annotation).
+<3> Enables application component scanning for the package the current class resides in (tweakable through attributes on the annotation).
 ====
-* *The application container* - Started by `SpringApplication.run(…)` in the main method or using `@RunWith(…)` and `@SpringApplication` in test cases (see `ApplicationTests` in the quick start section), inspects the given configuration and starts a Spring `ApplicationContext`. What exactly that means is depending on the configuration as well as the classpath.
+* *The application container* - Started by `SpringApplication.run(…)` in the main method or using `@RunWith(…)` and `@SpringApplication` in test cases (see `ApplicationTests` in the quick start section), inspects the given configuration and starts a Spring `ApplicationContext`. What exactly that means depends on the configuration as well as the classpath.
 
 .Spring Boot auto-configuration
 ****
@@ -43,13 +43,13 @@ The `@EnableAutoConfiguration` annotation triggers Spring Boot's inspection of t
 [[spring.bootstrap.standalone]]
 === Standalone
 
-* From within the IDE it's sufficient execute the main application class.
+* From within the IDE it's sufficient to execute the main application class.
 * On the command line, run `mvn clean package` and run the JAR (Java application ARchive) using `java -jar target/*.jar`. You can basically take the JAR created by the build and run that on any machine that has Java installed.
 
 [[spring.bootstrap.integration-tests]]
 === In integration tests
 
-* Test cases are usually executed by an open-source library called http://junit.org[JUnit] which has both Maven and Eclipse integration.
+* One of the most common ways of executing Test cases is with an open-source library called http://junit.org[JUnit] which has both Maven and Eclipse integration.
 * To bootstrap the application container in an integration test the test class has to look as follows:
 +
 .Bootstrapping the Spring container from an integration test
@@ -98,7 +98,7 @@ class MyDependingComponent {
 ----
 ====
 
-* If a component depended on cann not be found in the container, an exception is thrown:
+* If a component depended on cannot be found in the container, an exception is thrown:
 +
 .A Spring exception indicating a component cannot be found
 ====
@@ -119,4 +119,3 @@ When using STS, classes that are Spring components carry a little S-overlay on t
 
 image::sts-components.png[]
 ====
-
