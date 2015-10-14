@@ -16,23 +16,23 @@ Oliver Gierke
 [[intro]]
 == Introduction
 
-This script is supposed to give a brief overview about the fundamental, basic building blocks and concepts of Domain-Driven Design focussing on their application to Java (and mostly Spring) based web applications as well as how these building blocks translate into different groups of classes with different traits.
+This script is supposed to give a brief overview about the fundamental building blocks and concepts of Domain-Driven Design focussing on their application to Java (and mostly Spring) based web applications as well as how these building blocks translate into different groups of classes with different traits.
 
-The second part focuses on the concepts of entities, aggregate roots and repositories and how they map to Spring based Java applications as.
+The second part focuses on the concepts of entities, aggregate roots and repositories and how they map to Spring based Java applications.
 
 [[ddd]]
 == Domain-Driven Design
 
-Domain-Driven Design <<ddd>> is a book by Eric Evans and is undoubtedly one of the most-important books on software design. A more compact version of the book is available as Domain-Driven Design Quickly <<ddd-quickly>> on InfoQ.
+<<ddd, Domain-Driven Design>> is a book by Eric Evans and is undoubtedly one of the most important books on software design. A more compact version of the book is available as <<ddd-quickly, Domain-Driven Design Quickly>> on InfoQ.
 
-The book's core focus in on the domain a piece of software is supposed to deal with and how that domain actually connects to the software: starting with and emphasis on the domain's ubiquituous languge, approaches to distilling a model from that language and eventually turning this into working software reflecting that model.
+The book's core focus in on the domain a piece of software is supposed to deal with and how that domain actually connects to the software: starting with the domain's ubiquituous languge, approaches to distilling a model from that language and eventually turning this into working software reflecting that model.
 
 While software design patternsfootnoteref:[software-patterns, Software Design Patterns - https://en.wikipedia.org/wiki/Software_design_pattern[Wikipedia]] are usually defined through a technical context and are used to describe and capture relationships of classes, DDD is a more wholistic approach to find a common language between programmers and business and ultimately connect the code to be written to the domain.
 
 [[ddd.building-blocks]]
 === Building blocks
 
-The building blocks of define common terms that are used to describe model elements and assign certain traits to them. Let's have a look at the most fundamental ones here.
+The building blocks define common terms that are used to describe model elements and assign certain traits to them. Let's have a look at the most fundamental ones here.
 
 image::ddd-building-blocks.png[]
 
@@ -58,7 +58,7 @@ The order context might know about a product through its line items but actually
 image::bounded-context1.png[]
 
 This boils down to model elements which might appear as a singular concept at first glance needing to be reflected in different way in different aspects of the system.
-Modern software architecture even sometimes takes this a step further and even aligns system boundaries with such a bounded context, actively accepts redundance and eventual consistency to reduce the complexity of the individual systems, foster resilience and increase development productivity.footnoteref:[microservices, Microservices - https://en.wikipedia.org/wiki/Microservices[Wikipedia]].
+Modern software architecture even sometimes takes this a step further and even aligns system boundaries with such a bounded context, actively accepts redundance and eventual consistency to reduce the complexity of the individual systems, fosters resilience and increases development productivity.footnoteref:[microservices, Microservices - https://en.wikipedia.org/wiki/Microservices[Wikipedia]].
 
 [[ddd.building-blocks.value-objects]]
 ==== Value objects
@@ -69,7 +69,7 @@ A value object needs to be immutable to ensure integrity of the instances as the
 In the Java language, an instance of `String` is a good example of these traits, although it's not a good example for a domain concept as it's rather generic.
 A credit card number, an email address are great candidates to be modeled as value objects.
 Value objects are usually part of other model elements like entities or services.
-Implementing model elements as value objects also has a great impact on legibility and comprehensibility of the code base as Dan Bergh Johnsson demonstrates in his talk Power Use of Value Objects in DDD <<power-of-value-objects>>.
+Implementing model elements as value objects also has a great impact on legibility and comprehensibility of the code base as Dan Bergh Johnsson demonstrates in his talk <<power-of-value-objects, Power Use of Value Objects in DDD>>.
 
 Value objects are often undervalued when it comes to the translation of model into code as the implementation of a value object in plain Java is quite cumbersome due to the need to implement accessors,`equals(…)` and `hashCode()`.
 This can be countered with a tiny annotation processor called Lombokfootnoteref:[lombok, Project Lombok - https://projectlombok.org[Project website]].
@@ -95,7 +95,7 @@ While the address of a store might be a value object might just be part of the d
 
 Within the set of entities of a system, some usually play a special role in their relationship to others.
 Consider an order consisting of line items. The order might expose a total which is calculated from the prices of the individual line items.
-It might only be in a valid state if a certain minimum total.
+It might only be in a valid state if it is more than a certain minimum total.
 The root entities of such a construct are usually conceptually elevated to a so called aggregate root and thus create certain implications:
 
 - The aggregate root is responsible to assert invariants on the entire aggregate. State changes on the aggregate always result in a valid result state or trigger an exception.
@@ -114,23 +114,23 @@ Domain services implement functionality that cannot uniquely be assigned to an e
 [[ddd.spring]]
 === Domain-Driven Design in a Spring application
 
-The mapping of a domain concept to a DDD concept has quite a few important implications on the way these concepts are reflected in the code. To work effectively with Spring based Java applications, it's important to distinguish between that category of newables and injectables.
+The mapping of a domain concept to a DDD concept has quite a few important implications for the way these concepts are reflected in the code. To work effectively with Spring based Java applications, it's important to distinguish between that category of newables and injectables.
 
 As the names suggest, the differentiating line is drawn between the ways a developer gets hold of an instance of a class for that particular model element.
-A newable can be simply instantiated using the `new` operator, although that should even be limited to as little places as possible. The factory pattern can help here, too.
+A newable can be simply instantiated using the `new` operator, although even that should be limited to as few places as possible. The factory pattern can help here, too.
 Entities and value objects are newables.
 An injectable is usually a Spring component, which means that the latter controls its lifecycle, creates instances and destroys them. This allows the container to equip the service instance with technical services like transactions or security.
 Clients obtain instances by using dependency injection (hence the name injectable).
 Repositories and services are injectables.
 
-This distinction between these thow groups of classes naturally defines a preferred dependency direction from injectables to newables. Generally speaking
+This distinction between these two groups of classes naturally defines a preferred dependency direction from injectables to newables. Generally speaking
 
 - _Value object_ - JPA `@Embeddable` + corresponding `equals(…)` and `hashCode()` (Lombok's `@Value` helps here). Can depend on other value objects and entities.
 - _Entity_ - JPA `@Entity` + corresponding `equals(…)` and `hashCode()` implementations. Can depend on other entities and value objects.
 - _Repository_ - Spring component, usually a Spring Data repository interface. Can depend on entities and value objects, are centered around entities that are aggregate roots.
 - _Domain services_ - Usually a Spring component, a class annotated with `@Component` or a stereotype annotation. Can also be modeled as newables in some cases in case they don't require technical services to be applied (e.g. security, transactions).
 
-Not all classes of a Spring application can be assigned to any of these DDD categories. These other classes can usually be grouped into these more technical ones:
+Not all classes of a Spring application can be assigned to these DDD categories. These other classes can usually be grouped into the following, more technical ones:
 
 - _Application configuration_ - Classes to configure components.
 - _Technical adapters_ - Business logic implemented in a Spring application is usually exposed to clients through some remoting technology. In a web application these technologies are HTTP, HTML and JavaScript. With Spring MVC, controller classes serve the purpose of translating the concepts of the remoting technology (e.g. the notion of a request, request parameters, a payload, a response etc.) into the domain concepts and invoke services with value objects and entities.
