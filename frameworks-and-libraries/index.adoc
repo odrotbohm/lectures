@@ -15,7 +15,7 @@ Oliver Gierke
 [[intro]]
 == Introduction
 
-This script is supposed to give an overview about the concept of a library and a framework and distinguish one from another. We're going to look at JUnit as and example of a test framework and Spring as an example of a general purpose application framework.
+This script is supposed to give an overview about the concept of a library and a framework and distinguish one from another. We're going to look at JUnit as an example of a test framework and Spring as an example of a general purpose application framework.
 
 [[intro.frameworks-vs-libraries]]
 === Frameworks VS. Libraries
