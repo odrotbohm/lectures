@@ -240,7 +240,9 @@ For the sample project we created above the `pom.xml` could look something like 
 
 TIP: Open up the `pom.xml` you've created during the quick start, switch to the XML view and trigger code completion using kbd:[⌃+Space] to get a feel of the completion support the IDE provides.
 
-IDEs support Maven out of the box and usually derive all necessary project settings from the POM. Thus changing something about the project is usually all about tweaking the POM and the refreshing the project setup using kbd:[⌥+F5] (or right-click, menu:Maven[Update Project…]).
+IDEs support Maven out of the box and usually derive all necessary project settings from the POM.
+Thus changing something about the project is usually all about tweaking the POM and the refreshing the project setup using kbd:[⌥+F5] (or right-click, menu:Maven[Update Project…]).
+Note, that the project root folder needs to be imported which might be a different one than the repository one in case multiple projects are contained in the repository.
 
 TIP: Remove the compiler plugin declaration from the `pom.xml` and refresh the project. See how the JRE System Library node changes back to Java 1.5 (Maven's default). Re-add the plugin declaration, update again and see how it changes back to 1.8 due to our definition of source and target level.
 
