@@ -38,6 +38,7 @@ class Application { … }
 The `@EnableAutoConfiguration` annotation triggers Spring Boot's inspection of the classpath and application configuration to enable defaults. This causes the embedded web server being started (due to the web starter being a dependency) and the JPA infrastructure being configured (due to the JPA starter being a dependency).
 ****
 
+[[spring.bootstrap]]
 == Running a Spring application
 
 [[spring.bootstrap.standalone]]
@@ -45,6 +46,8 @@ The `@EnableAutoConfiguration` annotation triggers Spring Boot's inspection of t
 
 * From within the IDE it's sufficient to execute the main application class.
 * On the command line, run `mvn clean package` and run the JAR (Java application ARchive) using `java -jar target/*.jar`. You can basically take the JAR created by the build and run that on any machine that has Java installed.
+
+WARNING: Don't be trapped by trying to use your IDE's JAR export mechanism. It's crucial for the application to work as a standalone JAR to be built using the the actual build mechanism, which applies the necessary plugins to make the JAR bootable.
 
 [[spring.bootstrap.integration-tests]]
 === In integration tests

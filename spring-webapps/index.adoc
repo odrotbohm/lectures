@@ -4,6 +4,8 @@ Oliver Gierke
 :revremark: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 :numbered:
 :experimental:
+:sectids!:
+:sectanchors: true
 :source-highlighter: prettify
 :icons: font
 :toc:
@@ -13,6 +15,7 @@ This documents summarizes the content of a lecture I held at TU Dresden in suppo
 
 :numbered!:
 [preface]
+[[introduction]]
 == Introduction
 
 The fundamental goals of the lecture are:
@@ -42,8 +45,10 @@ The source document for this script can be found in https://github.com/olivergie
 
 include::quickstart.adoc[leveloffset=+1]
 
+[[build]]
 == Project dependencies and project build
 
+[[build.maven]]
 === Maven
 
 * Open source project to build Java applications
@@ -135,6 +140,7 @@ image::maven-console.png[]
 
 NOTE: Some changes (such as this one) need manual project refresh in Eclipse (kbd:[⌥+F5] or right-click the project, select menu:Maven[Update Project…]).
 
+[[build.project-setup]]
 === Project build
 
 * The project build includes a certain set of steps, called lifecycle phases.
@@ -206,6 +212,7 @@ Serendipity-:java-web-sample olivergierke $
 ----
 ====
 
+[[build.dependency-management]]
 === Dependency management
 
 * Logical definition of libraries that will be used by the project.
@@ -347,8 +354,10 @@ Serendipity:java-web-sample olivergierke $
 
 include::spring.adoc[leveloffset=+1]
 
+[[spring.data-access]]
 === Data access with Spring and JPA
 
+[[spring.data-access.fundamentals]]
 ==== Fundamentals of Java persistence
 
 * Most commonly used type of persistent stores these days are relational databases.
@@ -357,6 +366,7 @@ include::spring.adoc[leveloffset=+1]
 ** *Entity* - a domain concept with identity and a certain lifecycle (can be created, updated, deleted etc.).
 ** *Repository* - an application component simulating a collection of aggregate roots (a special kind of entity). Usually backed by some persistence mechanism.
 
+[[spring.data-access.entity-mapping]]
 ==== Entity mapping
 
 * Entity ytpes are equipped with JPA annotations to customize the mapping to the database, declaring ids etc.
@@ -379,6 +389,7 @@ public class GuestbookEntry {
 ----
 ====
 
+[[spring.data-access.spring-data]]
 ==== Spring Data JPA
 
 * Defines a programming model to ease the implementation of repositories.
@@ -399,6 +410,7 @@ interface Guestbook extends CrudRepository<GuestbookEntry, Long> {
 * CRUD operations available through `CrudRepository`.
 * Query methods follow a naming convention (see the http://docs.spring.io/spring-data/jpa/docs/current/reference/html/=repositories.query-methods.query-creation[reference documentation] for details).
 
+[[spring.data-access.spring-data.tests]]
 ===== Writing test cases
 
 * Create an integration test class (see <<spring.bootstrap.integration-tests, the section on testing>> for fundamentals).
@@ -434,12 +446,15 @@ public class GuestbookIntegrationTest {
 ----
 ====
 
+[[spring.mvc]]
 === Spring MVC
 
+[[spring.mvc.fundamentals]]
 ==== MVC fundamentals
 
 * Architectural pattern to implement user interfaces.footnote:[Model View Controller (MVC) Pattern -- http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller[Wikipedia]]
 
+[[spring.mvc.controllers]]
 ==== Spring MVC controllers
 
 * A controller is the central concept within Spring MVC. Accepts requests, delegates to business logic and returns either a view name and model or an object to be marshalled as e.g. JSON or XML.
@@ -474,6 +489,7 @@ class GuestbookController {
 ** REST web service (you want to server JSON/XML): return a domain object, either annotate method with `@ResponseBody` or the controller with `@RestController`.
 ** A website (through a template engine): return a `String` and thus trigger view resolution (see next section).
 
+[[spring.mvc.thymeleaf]]
 ==== Natural view templates with Thymeleaf
 
 * http://www.thymeleaf.org/[Thymeleaf] is the state-of-the art template engine to render HTML views.
