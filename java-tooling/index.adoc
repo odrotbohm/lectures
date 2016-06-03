@@ -28,6 +28,17 @@ NOTE: Sections marked with this icon icon:lightbulb-o[] will define tasks that y
 * https://github.com/olivergierke/lectures[Script repository] - in case you want to file tickets for improvements.
 * link:{livebase}/java-tooling[Script] - the rendered version of it.
 
+[[intro.objectives]]
+### Objectives
+
+After working through this script you should've done -- or at least be able to do the following things:
+
+* Install a JDK, Maven and Eclipse (or STS) on your machine and run them successfully.
+* Create a Maven based Java project in Eclipse.
+* Create classes and methods, use the code completion facilities to write code, rename methods etc.
+* Run and debug Java code in Eclipse, set break points and step through the code.
+* Run the project build from the command line.
+
 :numbered:
 [[prerequisites]]
 ## Infrastructure prerequisites
