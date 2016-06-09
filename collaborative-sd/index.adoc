@@ -36,9 +36,20 @@ To keep track of the individual changes a so called Version Control Systemfootno
 - *How to share tasks?* -- The development of a software system is usually split up into individual tasks: implementing a feature, fixing a bug etc.
 These tasks are usually kept in an issue tracker that allows to capture the requirements and track progress.
 
-- *Hot to connect the former with the latter?* -- Very often, tasks are directly related and even connected to changes in the codebase by some means. <<github.issues>> discusses how to capture tasks and connect them with changes.
+- *How to connect the former with the latter?* -- Very often, tasks are directly related and even connected to changes in the codebase by some means. <<github.issues>> discusses how to capture tasks and connect them with changes.
 
 - *Documentation?* -- Software projects require documentation to make sure decisions made during the development process can be understood. We're going to discuss a very pragmatic approach for this in <<documentation>>.
+
+[[objectives]]
+## Objectives
+
+After working through this script you should've done -- or at least be able to do the following things:
+
+* Install Git and a Git UI client on your development machine.
+* Create a Git managed project on your local hard drive.
+* Create a Github account and fork the Guestbook sample project.
+* Clone your Guestbook sample repository to youe local machine.
+* Setup your Guestbook fork for CI builds with Travis.
 
 :numbered:
 [[version-control]]
@@ -235,7 +246,7 @@ Continuous integration is the practice of building a software system on a regula
 [[ci.travis]]
 ### Travis
 
-Travisfootnoteref:[travis, Travis CI - https://travis-ci.org[Website]] is a CI service for free to us with public GitHub repository that allows a build per commit.
+Travisfootnoteref:[travis, Travis CI - https://travis-ci.org[Website]] is a CI service for free to use with public GitHub repository that allows a build per commit.
 
 .Travis build
 image::travis-build.png[]
