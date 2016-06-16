@@ -7,7 +7,7 @@ Parts of it can be used as a library but at the very core of it it's an inversio
 
 Beyond that it provides means to apply technical services (e.g. transactions and security) in a declarative and portable way, integrations with persistence and integration technologies as well as an MVC web framework.
 
-As a developer you usually use Spring Framework through Spring Boot, which is an opinionated add-on to automatically configure and ease the set up of a Spring based application so that you can focus on your business code.
+As a developer you usually use Spring Framework through Spring Boot, which is an opinionated add-on to automatically configure and ease the set up of a Spring based application so that you can focus on your business codefootnoteref:[spring, Philosophies that Shaped Successful Frameworks - http://www.capitalone.io/blog/successful-framework-philosophies/[Blog post]].
 
 [[spring.ioc]]
 == Inversion of Control
