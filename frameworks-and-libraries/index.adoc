@@ -43,6 +43,15 @@ They rely on the component to be testable with a minimal amount of context avail
 It's usually desirable to use a class on its own, potentially replacing required collaborators with test mocks or stubs.
 To make sure the effort for that is manageable, this requires the class under test to be used in an isolated way.
 
+[quote, Sarah Mei - @sarahmei]
+____
+The four primary reasons developers write tests:
+
+1. Prevent regressions
+2. Improve design
+3. Enable later refactoring
+4. Document behavior
+____
 
 Thus writing unit tests for a component usually drives the design of that class to become more simple. The approach of writing test cases to drive the design of code is called Test Driven Design/Development (TDDfootnoteref:[tdd, Test-Driven Development - https://en.wikipedia.org/wiki/Test-driven_development[Wikipedia]])
 
