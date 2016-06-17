@@ -9,6 +9,7 @@ Oliver Gierke
 :sectanchors: true
 :icons: font
 :toc:
+:toclevels: 3
 :livebase: http://static.olivergierke.de/lectures
 
 image:https://travis-ci.org/olivergierke/lectures.svg?branch=master["Build Status", link="https://travis-ci.org/olivergierke/lectures"]

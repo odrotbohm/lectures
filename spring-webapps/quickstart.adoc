@@ -56,10 +56,10 @@ What do we have here?
 @RestController <1>
 class WelcomeController {
 
-    @RequestMapping("/welcome") <2>
-    String welcome() {
-        return "Welcome"; <3>
-    }
+  @RequestMapping("/welcome") <2>
+  String welcome() {
+    return "Welcome"; <3>
+  }
 }
 ----
 <1> Causes the class to be found by the Spring container and turned into a Spring bean. This is not directly caused by `@RestController` but the annotation being meta-annotated with `@Controller` which is in turn annotated with `@Component`. See more on that in <<spring.building-blocks>>.
@@ -89,18 +89,17 @@ TIP: If you run the application in debug mode, you can change method bodies on t
 +
 [source, java]
 ----
-welcome(@RequestParam(value = "name", defaultValue = "World") String name)
+welcome(@RequestParam(value = "name") Optional<String> name)
 ----
 
 * Restart the application in debug mode (kbd:[⇧+⌥+D],kbd:[J] or menu:Debug As[Java Application]).
-* Browse to http://localhost:8080/welcome, output should be unchanged.
-* Change the URI to http://localhost:8080/welcome?name=Java, doesn't have any effect yet.
+* Browse to `http://localhost:8080/welcome`, output should be unchanged.
+* Change the URI to `http://localhost:8080/welcome?name=Java`, doesn't have any effect yet.
 * While the application is running, change the method body to:
 +
 [source, java]
 ----
-return "Welcome ".concat(name).concat("!");
+return "Welcome ".concat(name.orElse("World")).concat("!");
 ----
 
 * Refresh the browser tab and the response should now adapt to changes of the `name` attribute.
-
