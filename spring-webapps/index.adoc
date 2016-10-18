@@ -51,7 +51,9 @@ This script assumes you've worked through the scripts of the summer semester:
 
 Objective: understanding the building blocks of the web to a degree that it allows you to understand how a browser interacts with a server.
 
-* Biggest distributed network ever built (REST -> Roy Fielding's dissertation)
+image::lifecycle.png[]
+
+* Biggest distributed network ever built (REST -> Roy Fielding's https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm[dissertation])
 * Browser -> Request (Header, Body)-> Server
 * Server -> Response (typically HTML, JSON) -> Clients interprets response
 * Resources, URI, uniform interface (HTTP methods)
