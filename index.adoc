@@ -15,3 +15,4 @@ Oliver Gierke
 [[se-lab]]
 == Software Engineering Lab - Winter semester
 * link:spring-webapps/[Web applications with Java and Spring]
+* link:spring-webapps-old/[Web applications with Java and Spring (until WS 2015)]

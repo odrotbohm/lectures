@@ -55,9 +55,9 @@ ____
 
 Thus writing unit tests for a component usually drives the design of that class to become more simple. The approach of writing test cases to drive the design of code is called Test Driven Design/Development (TDDfootnoteref:[tdd, Test-Driven Development - https://en.wikipedia.org/wiki/Test-driven_development[Wikipedia]])
 
-include::../spring-webapps/quickstart.adoc[leveloffset=+1]
+include::../spring-webapps-old/quickstart.adoc[leveloffset=+1]
 
-include::../spring-webapps/spring.adoc[leveloffset=+1]
+include::../spring-webapps-old/spring.adoc[leveloffset=+1]
 
 //== Injectables VS Newables
 
