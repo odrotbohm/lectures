@@ -25,7 +25,7 @@ The second part focuses on the concepts of entities, aggregate roots and reposit
 
 <<ddd, Domain-Driven Design>> is a book by Eric Evans and is undoubtedly one of the most important books on software design. A more compact version of the book is available as <<ddd-quickly, Domain-Driven Design Quickly>> on InfoQ.
 
-The book's core focus in on the domain a piece of software is supposed to deal with and how that domain actually connects to the software: starting with an emphasis on the domain's ubiquitous language, approaches to distilling a model from that language and eventually turning this into working software reflecting that model.
+The book's core focus is on the domain a piece of software is supposed to deal with and how that domain actually connects to the software: starting with an emphasis on the domain's ubiquitous language, approaches to distilling a model from that language and eventually turning this into working software reflecting that model.
 
 While software design patternsfootnoteref:[software-patterns, Software Design Patterns - https://en.wikipedia.org/wiki/Software_design_pattern[Wikipedia]] are usually defined through a technical context and are used to describe and capture relationships of classes, DDD is a more wholistic approach to find a common language between programmers and business and ultimately connect the code to be written to the domain.
 In other words, while you might be familiar with more technical patterns already, in business code they're mostly perceived as technical noisefootnoteref:[patterns-as-technical-noise, Patterns as technical noise - https://www.slideshare.net/cyriux/ddd-patterns-that-were-not-in-the-book[Slide deck, slide 54]].
