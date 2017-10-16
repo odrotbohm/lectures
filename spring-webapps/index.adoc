@@ -374,9 +374,9 @@ Read more about that in http://static.olivergierke.de/lectures/frameworks-and-li
 * http://static.olivergierke.de/lectures/frameworks-and-libraries/[Script: Frameworks and Libraries]
 * http://static.olivergierke.de/lectures/ddd-and-spring/[Script: DDD & Spring]
 * https://github.com/st-tu-dresden/guestbook[The Guestbook sample application]
-* http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle[Spring Boot reference documentation]
-* http://docs.spring.io/spring-framework/docs/4.0.x/spring-framework-reference/htmlsingle[Spring Framework reference documentation]
-* http://docs.spring.io/spring-data/jpa/docs/current/reference/html[Spring Data JPA reference documentation]
+* http://docs.spring.io/spring-boot/docs/1.5.x/reference/htmlsingle[Spring Boot reference documentation]
+* http://docs.spring.io/spring-framework/docs/4.3.x/spring-framework-reference/htmlsingle[Spring Framework reference documentation]
+* http://docs.spring.io/spring-data/jpa/docs/1.11.x/reference/html[Spring Data JPA reference documentation]
 * https://spring.io/guides[Getting started guides]
 * http://projects.spring.io/spring-boot[Spring Boot project home]
 
