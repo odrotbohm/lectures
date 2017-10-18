@@ -156,6 +156,8 @@ class MyController {
 As the request parameter can be absent, we default it to `World` here.
 ====
 
+NOTE: Find an overview about all supported annotations https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-methods[here] and http://engineering.pivotal.io/post/must-know-spring-boot-annotations-controllers/[here].
+
 [source,html]
 ----
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"> <1>
