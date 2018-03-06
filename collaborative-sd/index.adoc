@@ -29,8 +29,8 @@ A team comprises a group of people or other animals linked in a *common purpose*
 
 When developing software in a team some very fundamental challenges arise:
 
-- *How to share code?* -- A software project usually involves building one or more systems that are built from one ore more codebases.
-In a team the indivual members will have to interact and modify it.
+- *How to share code?* -- A software project usually involves building one or more systems that are built from one or more codebases.
+In a team the individual members will have to interact and modify it.
 To keep track of the individual changes a so called Version Control Systemfootnoteref:[vcs, Revision Control - http://en.wikipedia.org/wiki/Revision_control[Wikipedia]] is used. We'll cover this in <<version-control>>.
 
 - *How to share tasks?* -- The development of a software system is usually split up into individual tasks: implementing a feature, fixing a bug etc.
@@ -48,7 +48,7 @@ After working through this script you should've done -- or at least be able to d
 * Install Git and a Git UI client on your development machine.
 * Create a Git managed project on your local hard drive.
 * Create a Github account and fork the Guestbook sample project.
-* Clone your Guestbook sample repository to youe local machine.
+* Clone your Guestbook sample repository to your local machine.
 * Setup your Guestbook fork for CI builds with Travis.
 
 :numbered:
@@ -129,7 +129,7 @@ The colored labels represent branches (orange: currently checked out branch, gre
 A tag is a reference to a particular state of the repository and usually used to indicate the commit that has been used to craft a release of a piece of software.
 
 As you can see, commit `dc8a944` has two subsequent commits `feb119c` and `1c8ed65`. `dc8a944` is the point where the `6.1.x` branch was branched of the main development line.
-It's not by accident that this is also the commit that's tagged with `6.1.0.RELEASE` as it maks the starting point of the maintenance branch, which has seen a bugfix release in commit `96105b8`.
+It's not by accident that this is also the commit that's tagged with `6.1.0.RELEASE` as it marks the starting point of the maintenance branch, which has seen a bugfix release in commit `96105b8`.
 
 [[version-control.git.remote-repositories]]
 #### Interacting with a remote repository
