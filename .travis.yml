@@ -1,10 +1,16 @@
 sudo: required
+
 before_install:
 - gem install asciidoctor
 
 script:
-- ./render.sh
+- "./render.sh"
 
 after_success:
 # Upload generated files to FTP server
 - find . -type f \( -name "*.html" -o -name "*.png" -o -name "*.gif" -o -name "*.pdf" \) -exec echo {} \; -exec curl --ftp-create-dirs -T {} -u $FTP_USER:$FTP_PASS ftp://static.olivergierke.de/lectures/{} \;
+
+env:
+  global:
+  - secure: Mx9GyRiwlpcQlx6iYNkL+ClhByRpKPQ9s8x2JDGW78gAbq2wvhmrRxBYmJKRHPRLfqFn4K+HP6ebmW2aoQsZKM6ngiqmBAfv4fy98d9xl3F7ZZgZ14BAd4VS5WeUudjdOEeQqSn5Fm3dR+ObopggHGe7gisJksTEJGda2CXWoIE=
+  - secure: ZZ8INmIc+v3gkg5VcECiGfXqKMgq1fIr9e+dR2+qeyMTo2KSmtqxrWcraHDp4zih0XAq8aU1l+pJObduhadAzttHPKCOS3TTekenipmL/LYc0ZjdS1mOTbk98yA8xKOdq7kQ4Wp6U3SwalvOf/ctX0Fvs7O3intzL81Yf49YTDc=
