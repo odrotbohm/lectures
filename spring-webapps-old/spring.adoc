@@ -2,12 +2,12 @@
 = Spring -- An application framework
 :imagesdir: images
 
-The Spring Framework footnoteref:[spring, Spring - https://en.wikipedia.org/wiki/Spring_Framework[Wikipedia]] is an open-source, general purpose, Java-based application framework.
-Parts of it can be used as a library but at the very core of it it's an inversion-of-controlfootnoteref:[ioc, Inversion of Control - https://en.wikipedia.org/wiki/Inversion_of_control[Wikipedia]] container which allows you to write easy to test application components.
+The Spring Framework footnote:spring[Spring - https://en.wikipedia.org/wiki/Spring_Framework[Wikipedia]] is an open-source, general purpose, Java-based application framework.
+Parts of it can be used as a library but at the very core of it it's an inversion-of-controlfootnote:ioc[Inversion of Control - https://en.wikipedia.org/wiki/Inversion_of_control[Wikipedia]] container which allows you to write easy to test application components.
 
 Beyond that it provides means to apply technical services (e.g. transactions and security) in a declarative and portable way, integrations with persistence and integration technologies as well as an MVC web framework.
 
-As a developer you usually use Spring Framework through Spring Boot, which is an opinionated add-on to automatically configure and ease the set up of a Spring based application so that you can focus on your business codefootnoteref:[spring, Philosophies that Shaped Successful Frameworks - http://www.capitalone.io/blog/successful-framework-philosophies/[Blog post]].
+As a developer you usually use Spring Framework through Spring Boot, which is an opinionated add-on to automatically configure and ease the set up of a Spring based application so that you can focus on your business codefootnote:spring-philosophy[Philosophies that Shaped Successful Frameworks - https://medium.com/capital-one-tech/philosophies-that-shaped-successful-frameworks-f976781e9bd4/[Blog post]].
 
 [[spring.ioc]]
 == Inversion of Control

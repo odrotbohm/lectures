@@ -1,5 +1,5 @@
 # Fundamentals of Collaborative Software Development
-Oliver Gierke
+Oliver Drotbohm
 :revdate: {docdatetime}
 :revremark: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 :numbered:
@@ -17,7 +17,7 @@ image:https://travis-ci.org/olivergierke/lectures.svg?branch=master["Build Statu
 :numbered!:
 [preface]
 [[intro]]
-## Introduction
+== Introduction
 
 This script will provide an introduction to team collaboration in software development and give a short overview over the involved tools and practices.
 
@@ -25,13 +25,13 @@ NOTE: Due to the restricted amount of time available we limit ourselves to the b
 Some of the shown practices here have some drawbacks so that more advanced software projects usually augment and modify them with additional practices.
 
 [quote, Wikipedia]
-A team comprises a group of people or other animals linked in a *common purpose*. Human teams are especially appropriate for conducting tasks that are high in complexity and have many *interdependent subtasks*.footnoteref:[team, Team - http://en.wikipedia.org/wiki/Team[Wikipedia]]
+A team comprises a group of people or other animals linked in a *common purpose*. Human teams are especially appropriate for conducting tasks that are high in complexity and have many *interdependent subtasks*.footnote:team[Team - http://en.wikipedia.org/wiki/Team[Wikipedia]]
 
 When developing software in a team some very fundamental challenges arise:
 
 - *How to share code?* -- A software project usually involves building one or more systems that are built from one or more codebases.
 In a team the individual members will have to interact and modify it.
-To keep track of the individual changes a so called Version Control Systemfootnoteref:[vcs, Revision Control - http://en.wikipedia.org/wiki/Revision_control[Wikipedia]] is used. We'll cover this in <<version-control>>.
+To keep track of the individual changes a so called Version Control Systemfootnote:vcs[Revision Control - http://en.wikipedia.org/wiki/Revision_control[Wikipedia]] is used. We'll cover this in <<version-control>>.
 
 - *How to share tasks?* -- The development of a software system is usually split up into individual tasks: implementing a feature, fixing a bug etc.
 These tasks are usually kept in an issue tracker that allows to capture the requirements and track progress.
@@ -41,7 +41,7 @@ These tasks are usually kept in an issue tracker that allows to capture the requ
 - *Documentation?* -- Software projects require documentation to make sure decisions made during the development process can be understood. We're going to discuss a very pragmatic approach for this in <<documentation>>.
 
 [[objectives]]
-## Objectives
+== Objectives
 
 After working through this script you should've done -- or at least be able to do the following things:
 
@@ -53,15 +53,15 @@ After working through this script you should've done -- or at least be able to d
 
 :numbered:
 [[version-control]]
-## Version Control Systems
+== Version Control Systems
 
-Version Control Systemsfootnoteref:[vcs] (VCS) allow tracking changes to content of arbitrary type.
+Version Control Systemsfootnote:vcs[] (VCS) allow tracking changes to content of arbitrary type.
 They're usually used to track source code and related artifacts.
 VCS allow keeping track of who changed what and why by introducing the notion of a commit, a set of changes to the repository attributed to an author and a textual description of the change.
-The most prominent VCS these days is Gitfootnoteref:[git, Git - https://git-scm.com/[Website]], but other systems like Mercurial, SVN, CVS, ClearCase or Perforce might cross your paths.
+The most prominent VCS these days is Gitfootnote:git[Git - https://git-scm.com/[Website]], but other systems like Mercurial, SVN, CVS, ClearCase or Perforce might cross your paths.
 
 [[version-control.git]]
-### Git
+=== Git
 
 Git is a distributed version control system brought to life by Linus Torvalds.
 In Git commits are identified by a SHA-1 and refer back to their ancestor commits.
@@ -76,7 +76,7 @@ https://git-scm.com[Git] can be installed by downloading the binaries from the p
 - Windows (and any other): Download from the http://git-scm.com/downloads[website].
 
 [[version-control.git.quickstart]]
-#### Quickstart
+==== Quickstart
 
 [source, bash]
 ----
@@ -113,11 +113,11 @@ Date:   Wed Jun 3 13:57:07 2015 +0200
 At this point we have made and commited changes to the local repository.
 
 [[version-control.git.branches]]
-#### Branches
+==== Branches
 Chains of commits form so called branches. Branches are created for a variety of purposes:
 
 - *Feature branches* -- these rather short lived branches are created temporarily to isolate independently ongoing work from one another. They allow to control the point of integration of distinct development streams. As merging (see <<github.merges>>) them back together becomes more complicated the more they diverge from each other, care has to be taken to regularly rebase them and keeping the features small.
-- *Maintenance branches* -- these rather long lived branches are used to separate pure maintenance work from ongoing development that might introduce new features. Maintenance branches are used in Software Configuration Managementfootnoteref:[scm, Software Configuration Management -- http://en.wikipedia.org/wiki/Software_configuration_management[Wikipedia]] (SCM) to manage the release and maintenance of different versions of a piece of software.
+- *Maintenance branches* -- these rather long lived branches are used to separate pure maintenance work from ongoing development that might introduce new features. Maintenance branches are used in Software Configuration Managementfootnote:scm[Software Configuration Management -- http://en.wikipedia.org/wiki/Software_configuration_management[Wikipedia]] (SCM) to manage the release and maintenance of different versions of a piece of software.
 
 [[version-control.git.branches-screenshot]]
 .The commit history of http://www.st.inf.tu-dresden.de/SalesPoint[Salespoint] in GitX
@@ -132,7 +132,7 @@ As you can see, commit `dc8a944` has two subsequent commits `feb119c` and `1c8ed
 It's not by accident that this is also the commit that's tagged with `6.1.0.RELEASE` as it marks the starting point of the maintenance branch, which has seen a bugfix release in commit `96105b8`.
 
 [[version-control.git.remote-repositories]]
-#### Interacting with a remote repository
+==== Interacting with a remote repository
 
 Git is a distributed VCS, which means that clones of a repository can and will exist in different locations.
 The most rudimentary setup is a canonical remote repository usually hosted by a Git server as well as local repositories on the individual developer's machines.
@@ -149,7 +149,7 @@ $ git pull origin master <3>
 <3> Pulls commits made to the `master` in the remote repository into the current branch.
 
 [[version-control.git.tools]]
-#### Tools
+==== Tools
 
 - https://git-scm.com/downloads/guis[GUI clients overview]
 - GitHub for http://mac.github.com[Mac] / http://windows.github.com/[Windows]
@@ -157,19 +157,19 @@ $ git pull origin master <3>
 - https://www.eclipse.org/egit/[EGit]
 
 [[version-control.git.tutorials]]
-#### Tutorials
+==== Tutorials
 
 - http://rogerdudler.github.io/git-guide/index.html[Git - The Simple Guide] - Roger Dudler
 - http://www.vogella.com/tutorials/Git/article.html[Distributed Version Control with Git] - Lars Vogel (esp. chapters 1, 2).
 - http://www.vogella.com/tutorials/EclipseGit/article.html[Git Version Control with Eclipse] - Lars Vogel
 
 [[github]]
-## GitHub
+== GitHub
 
 [quote, Github]
 Build software better, together.
 
-GitHub is a Software As A Servicefootnoteref:[saas, Software As A Service - http://en.wikipedia.org/wiki/Software_as_a_service[Wikipedia]] (SAAS) platform for collaborative software development.
+GitHub is a Software As A Servicefootnote:saas[Software As A Service - http://en.wikipedia.org/wiki/Software_as_a_service[Wikipedia]] (SAAS) platform for collaborative software development.
 It allows to host Git repositories, track issues and host documentation and release binaries.
 It provides free service for public repositories
 
@@ -180,7 +180,7 @@ image::github-project.png[]
 image::github-commits.png[]
 
 [[github.issues]]
-### Tracking issues
+=== Tracking issues
 
 .GitHub issues
 image::github-issues.png[]
@@ -192,12 +192,12 @@ image::github-labels.png[]
 image::github-resolved-issues.png[]
 
 [[github.pull-requests]]
-### Pull requests
+=== Pull requests
 
 Pull requests are GitHub's way of implementing code reviews:
 
 [quote, Wikipedia]
-Code review is systematic examination (often known as peer review) of computer source code. It is intended to find and fix mistakes overlooked in the initial development phase, improving both the overall quality of software and the developers' skills.footnoteref:[code-review, Code review - http://en.wikipedia.org/wiki/Code_review[Wikipedia]]
+Code review is systematic examination (often known as peer review) of computer source code. It is intended to find and fix mistakes overlooked in the initial development phase, improving both the overall quality of software and the developers' skills.footnote:code-review[Code review - http://en.wikipedia.org/wiki/Code_review[Wikipedia]]
 
 A pull request is a post-commit variant of a code review which means the original developer pushes the code to be reviewed into branch in a remote repository.
 The GitHub UI then allows to create a pull request which formally expresses the desire of the contributor to get a set of changes integrated with the project.
@@ -212,15 +212,15 @@ image::github-pr.png[]
 image::github-pr-changes.png[]
 
 [[github.merges]]
-### Merges
+=== Merges
 
-Mergesfootnoteref:[merge, Merge - http://en.wikipedia.org/wiki/Merge_(revision_control)[Wikipedia]] are a crucial task in working with code in distributed teams.
+Mergesfootnote:merge[Merge - http://en.wikipedia.org/wiki/Merge_(revision_control)[Wikipedia]] are a crucial task in working with code in distributed teams.
 If changes that already have been merged overlap with changes to be merged the risk of so called merge conflicts arise.
 These usually have to be resolved manually by inspecting the conflicting changes and consolidating using a so called diff or merge tool.
 
 Generally speaking it's preferable to organize work -- and thus the code -- into parts that can be changed independently. Another option is to try to estimate the reach of changes for particular tasks and schedule them to be worked on subsequently.
 
-### General recommendations
+==== General recommendations
 
 - *Create issues per task* -- to be able to keep track of which changes relate to which task it's best to create tickets for each of them. This allows you to refer to these tasks using the ticket identifiers.
 - *Make sure changes in a commit / PR only target one task* -- Keeping track of which changes were made for which reason is significantly harder if a commit contains changes that relate to multiple tickets. Try to focus on changes for a dedicated task and commit early and often.
@@ -231,22 +231,22 @@ Feature branches shouldn't live for more than a couple of days.
 - *Good commit messages* -- the only way for your colleagues to understand the reasoning behind a commit is reading the commit messages.
 Thus a "changed something" isn't incredibly helpful.
 Describe what you changed and -- even more importantly -- why you changed what on a high level.
-- *Refer to tickets from the code and commit message* -- GitHub detects ticket references (i.e. `#4711`) and links them from the tickets.
+- *Refer to tickets from the code and commit message* -- GitHub detects ticket references (i.e. `\#4711`) and links them from the tickets.
 It even supports keywords like `fixes` to automatically resolve a ticket when pushing the commit.
 An example of this can be seen in the lower third of the screenshot in <<version-control.git.branches-screenshot>>.
 
 [[ci]]
-## Continuous integration
+== Continuous integration
 
 [quote, Martin Fowler]
-Continuous Integration (CI) is a software development practice where members of a team integrate their work frequently, usually each person integrates at least daily - leading to multiple integrations per day.footnoteref:[ci, Martin Fowler – http://martinfowler.com/articles/continuousIntegration.html[Continuous Integration]]
+Continuous Integration (CI) is a software development practice where members of a team integrate their work frequently, usually each person integrates at least daily - leading to multiple integrations per day.footnote:ci[Martin Fowler – http://martinfowler.com/articles/continuousIntegration.html[Continuous Integration]]
 
 Continuous integration is the practice of building a software system on a regular basis and thus require an link:{livebase}/java-tooling#build[automated build].
 
 [[ci.travis]]
-### Travis
+=== Travis
 
-Travisfootnoteref:[travis, Travis CI - https://travis-ci.org[Website]] is a CI service for free to use with public GitHub repository that allows a build per commit.
+Travisfootnote:travis[Travis CI - https://travis-ci.org[Website]] is a CI service for free to use with public GitHub repository that allows a build per commit.
 
 .Travis build
 image::travis-build.png[]
@@ -255,7 +255,7 @@ image::travis-build.png[]
 image::travis-history.png[]
 
 [[ci.travis.configuration]]
-#### Configuration
+==== Configuration
 
 Continuous integration requires the definition of which tasks to actually execute for a build. Travis inspects a YAML file named `.travis.yml` in the project root to pick up customizations to the build.
 
@@ -272,7 +272,7 @@ jdk:
 ====
 
 [[documentation]]
-## Documentation
+== Documentation
 
 Software systems usually ship with documentation of various kinds:
 
@@ -291,10 +291,10 @@ The latter two beg the question of which technical format to use for writing. Se
 - *Comprehensive tooling for processing* -- the format should be easily transformable into distribution formats consumable by mere mortals (single-sourcing).
 
 [[documentation.asciidoctor]]
-### Asciidoc(tor)
+=== Asciidoc(tor)
 
 [quote, Asciidoc]
-AsciiDoc is a text document format for writing notes, documentation, articles, books, ebooks, slideshows, web pages, man pages and blogs. AsciiDoc files can be translated to many formats including HTML, PDF, EPUB, man page.footnoteref:[asciidoc, Asciidoc - http://www.methods.co.nz/asciidoc/[Website]]
+AsciiDoc is a text document format for writing notes, documentation, articles, books, ebooks, slideshows, web pages, man pages and blogs. AsciiDoc files can be translated to many formats including HTML, PDF, EPUB, man page.footnote:asciidoc[Asciidoc - http://www.methods.co.nz/asciidoc/[Website]]
 
 Asciidoc shines because of its simple syntax but more complete set of structural elements available.
 Markdown is a decent choice for very simple documents, too, but lacks important structural elements like tables, footnotes, etc.
@@ -302,16 +302,16 @@ Markdown is a decent choice for very simple documents, too, but lacks important 
 As Asciidoc is a simple text format, documents can be edited using any text editor. A lot of the popular ones these days (Sublime Text, Atom etc.) even have dedicated support for syntax highlighting etc.
 
 [quote, Asciidoctor]
-A fast text processor & publishing toolchain for converting AsciiDoc to HTML5, DocBook & more.footnoteref:[asciidoctor, Asciidoctor - http://asciidoctor.org/[Website]]
+A fast text processor & publishing toolchain for converting AsciiDoc to HTML5, DocBook & more.footnote:asciidoctor[Asciidoctor - http://asciidoctor.org/[Website]]
 
 Asciidoctor is an open source implementation of Asciidoc and provides tools and build system integration to build human-readable versions of the documentation.
 
 [[documentation.asciidoctor.render]]
-#### How to render Asciidoc files?
+==== How to render Asciidoc files?
 
-A very easy way to preview Asciidoc files is the Asciidoctor.js Live Previewfootnoteref:[asciidoctor-chrome, Asciidoctor.js Live Preview - https://chrome.google.com/webstore/detail/asciidoctorjs-live-previe/iaalpfgpbocpdfblpnhhgllgbdbchmia?hl=en[Google Chrome Webstore]]. Simply drag an Asciidoc file into the browser and the plugin will render an HTML preview of the file.
+A very easy way to preview Asciidoc files is the Asciidoctor.js Live Previewfootnote:asciidoctor-chrome[Asciidoctor.js Live Preview - https://chrome.google.com/webstore/detail/asciidoctorjs-live-previe/iaalpfgpbocpdfblpnhhgllgbdbchmia?hl=en[Google Chrome Webstore]]. Simply drag an Asciidoc file into the browser and the plugin will render an HTML preview of the file.
 
-For a build on the command line, install Asciidoctor as described in its reference documentationfootnoteref:[asciidoctor-install, Asciidoctor - http://asciidoctor.org/docs/install-toolchain/[Installation instructions]].
+For a build on the command line, install Asciidoctor as described in its reference documentationfootnote:asciidoctor-install[Asciidoctor - http://asciidoctor.org/docs/install-toolchain/[Installation instructions]].
 
 GitHub supports Asciidoc out of the box and automatically renders Asciidoc files when previewing them. E.g. the readme of the repository hosting this lecture is written in Asciidoc:
 
@@ -321,7 +321,7 @@ image::asciidoc-readme.png[]
 Last but not least documentation can be rendered during the project build as plugins for Java build systems (Maven, Gradle) exist.
 
 [[recommendations]]
-## Recommendations from the Twittersphere
+== Recommendations from the Twittersphere
 
 See https://twitter.com/olivergierke/status/606050631653183488[this conversation] for all replies.
 

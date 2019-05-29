@@ -53,7 +53,7 @@ The four primary reasons developers write tests:
 4. Document behavior
 ____
 
-Thus writing unit tests for a component usually drives the design of that class to become more simple. The approach of writing test cases to drive the design of code is called Test Driven Design/Development (TDDfootnoteref:[tdd, Test-Driven Development - https://en.wikipedia.org/wiki/Test-driven_development[Wikipedia]])
+Thus writing unit tests for a component usually drives the design of that class to become more simple. The approach of writing test cases to drive the design of code is called Test Driven Design/Development (TDDfootnote:tdd[Test-Driven Development - https://en.wikipedia.org/wiki/Test-driven_development[Wikipedia]])
 
 include::../spring-webapps-old/quickstart.adoc[leveloffset=+1]
 

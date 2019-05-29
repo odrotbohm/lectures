@@ -27,9 +27,9 @@ The second part focuses on the concepts of entities, aggregate roots and reposit
 
 The book's core focus is on the domain a piece of software is supposed to deal with and how that domain actually connects to the software: starting with an emphasis on the domain's ubiquitous language, approaches to distilling a model from that language and eventually turning this into working software reflecting that model.
 
-While software design patternsfootnoteref:[software-patterns, Software Design Patterns - https://en.wikipedia.org/wiki/Software_design_pattern[Wikipedia]] are usually defined through a technical context and are used to describe and capture relationships of classes, DDD is a more wholistic approach to find a common language between programmers and business and ultimately connect the code to be written to the domain.
-In other words, while you might be familiar with more technical patterns already, in business code they're mostly perceived as technical noisefootnoteref:[patterns-as-technical-noise, Patterns as technical noise - https://www.slideshare.net/cyriux/ddd-patterns-that-were-not-in-the-book[Slide deck, slide 54]].
-Also, the original authors of the GoF book have shared incisive insightsfootnoteref:[gof-interview, Design Patterns 15 Years Later: An Interview with Erich Gamma, Richard Helm, and Ralph Johnson,  http://www.informit.com/articles/article.aspx?p=1404056[Interview]] about what they'd do differently if the book ever got an update, including which patterns to deemphasize, how to slightly change the organization of the patterns etc.
+While software design patternsfootnote:software-patterns[Software Design Patterns - https://en.wikipedia.org/wiki/Software_design_pattern[Wikipedia]] are usually defined through a technical context and are used to describe and capture relationships of classes, DDD is a more wholistic approach to find a common language between programmers and business and ultimately connect the code to be written to the domain.
+In other words, while you might be familiar with more technical patterns already, in business code they're mostly perceived as technical noisefootnote:patterns-as-technical-noise[Patterns as technical noise - https://www.slideshare.net/cyriux/ddd-patterns-that-were-not-in-the-book[Slide deck, slide 54]].
+Also, the original authors of the GoF book have shared incisive insightsfootnote:gof-interview[Design Patterns 15 Years Later: An Interview with Erich Gamma, Richard Helm, and Ralph Johnson,  http://www.informit.com/articles/article.aspx?p=1404056[Interview]] about what they'd do differently if the book ever got an update, including which patterns to deemphasize, how to slightly change the organization of the patterns etc.
 
 [[ddd.building-blocks]]
 === Building blocks
@@ -60,13 +60,13 @@ The order context might know about a product through its line items but actually
 image::bounded-context1.png[]
 
 This boils down to model elements which might appear as a singular concept at first glance needing to be reflected in different way in different aspects of the system.
-Modern software architecture even sometimes takes this a step further and even aligns system boundaries with such a bounded context, actively accepts redundance and eventual consistency to reduce the complexity of the individual systems, fosters resilience and increases development productivity.footnoteref:[microservices, Microservices - https://en.wikipedia.org/wiki/Microservices[Wikipedia]].
+Modern software architecture even sometimes takes this a step further and even aligns system boundaries with such a bounded context, actively accepts redundancy and eventual consistency to reduce the complexity of the individual systems, fosters resilience and increases development productivity.footnote:microservices[Microservices - https://en.wikipedia.org/wiki/Microservices[Wikipedia]].
 
 [[ddd.building-blocks.value-objects]]
 ==== Value objects
 
 Represent a concept from the domain that -- as the name suggests -- is considered a value.
-In terms of classes that means that individual instances don't have identity, no lifecycle.
+In terms of classes that means that individual instances don't have identity, no life cycle.
 A value object needs to be immutable to ensure integrity of the instances as they can be shared amongst different consumers.
 In the Java language, an instance of `String` is a good example of these traits, although it's not a good example for a domain concept as it's rather generic.
 A credit card number, an email address are great candidates to be modeled as value objects.
@@ -74,7 +74,7 @@ Value objects are usually part of other model elements like entities or services
 Implementing model elements as value objects also has a great impact on legibility and comprehensibility of the code base as Dan Bergh Johnsson demonstrates in his talk <<power-of-value-objects, Power Use of Value Objects in DDD>>.
 
 Value objects are often undervalued when it comes to the translation of model into code as the implementation of a value object in plain Java is quite cumbersome due to the need to implement accessors,`equals(…)` and `hashCode()`.
-This can be countered with a tiny annotation processor called Lombokfootnoteref:[lombok, Project Lombok - https://projectlombok.org[Project website]].
+This can be countered with a tiny annotation processor called Lombokfootnote:lombok[Project Lombok - https://projectlombok.org[Project website]].
 
 [[ddd.building-blocks.entites]]
 ==== Entities
@@ -140,7 +140,7 @@ Not all classes of a Spring application can be assigned to these DDD categories.
 [[further-reading]]
 == Further reading
 
-1. Check out the Guestbookfootnoteref:[guestbook, Guestbook - https://github.com/st-tu-dresden/guestbook[Sample application on GitHub]] and Videoshopfootnoteref:[videoshop, Videoshop - https://github.com/st-tu-dresden/videoshop[Sample application on GitHub]] and make sure you understand which classes implement which DDD concepts.
+1. Check out the Guestbookfootnote:guestbook[Guestbook - https://github.com/st-tu-dresden/guestbook[Sample application on GitHub]] and Videoshopfootnote:videoshop[Videoshop - https://github.com/st-tu-dresden/videoshop[Sample application on GitHub]] and make sure you understand which classes implement which DDD concepts.
 2. Make sure you understand how the different traits of these concepts (identity for entities, immutability for value objects, dependency injection for services) are implemented.
 
 :numbered!:
