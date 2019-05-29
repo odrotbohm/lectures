@@ -57,7 +57,7 @@ However, there are a couple of more ways we might want to execute the applicatio
 [[spring.bootstrap.standalone]]
 === Standalone
 
-* On the command line, run `mvn clean package` and run the JAR (Java application ARchive) using `java -jar target/*.jar`.
+* On the command line, run `mvn clean package` and run the JAR (Java application ARchive) using `java -jar target/\*.jar`.
 You can basically take the JAR created by the build and run that on any machine that has Java installed.
 
 WARNING: Don't be trapped by trying to use your IDE's JAR export mechanism.
