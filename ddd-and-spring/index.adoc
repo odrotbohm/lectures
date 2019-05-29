@@ -23,7 +23,7 @@ The second part focuses on the concepts of entities, aggregate roots and reposit
 [[ddd]]
 == Domain-Driven Design
 
-<<ddd, Domain-Driven Design>> is a book by Eric Evans and is undoubtedly one of the most important books on software design. A more compact version of the book is available as <<ddd-quickly, Domain-Driven Design Quickly>> on InfoQ.
+<<ddd-book, Domain-Driven Design>> is a book by Eric Evans and is undoubtedly one of the most important books on software design. A more compact version of the book is available as <<ddd-quickly, Domain-Driven Design Quickly>> on InfoQ.
 
 The book's core focus is on the domain a piece of software is supposed to deal with and how that domain actually connects to the software: starting with an emphasis on the domain's ubiquitous language, approaches to distilling a model from that language and eventually turning this into working software reflecting that model.
 
@@ -150,7 +150,7 @@ Not all classes of a Spring application can be assigned to these DDD categories.
 === Bibliography
 
 [bibliography]
-- [[[ddd]]] - http://www.amazon.de/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215[Eric Evans -- Domain-Driven Design: Tackling Complexity in the Heart of Software]- Addison Wesley. 2003.
+- [[[ddd-book]]] - http://www.amazon.de/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215[Eric Evans -- Domain-Driven Design: Tackling Complexity in the Heart of Software]- Addison Wesley. 2003.
 - [[[ddd-quickly]]] - http://www.infoq.com/minibooks/domain-driven-design-quickly[Abel Avram, Floyd Marinescu -- Domain-Driven Design Quickly]. InfoQ. 2006.
 - [[[power-of-value-objects]]] - http://www.infoq.com/presentations/Value-Objects-Dan-Bergh-Johnsson[Dan Bergh Johnsson -- Power Use of Value Objects in DDD]. InfoQ. 2009.
 
