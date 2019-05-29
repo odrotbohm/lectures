@@ -81,6 +81,7 @@ class ApplicationTests { … }
 * `@SpringBootTest` expresses Boot to be used during tests. The main configuration class will be auto-detected looking for a class with an `@SpringBootApplication` in the current package and all above.
 * `@RunWith(…)` tells JUnit to give Spring Framework the control over the test execution.
 
+[[spring.application-components]]
 == Application components
 
 Application components are usually identified by an annotation that is either `@Component` or an annotation which is annotated with `@Component` in turn (e.g. `@Service`, `@Repository`, `@Controller`).
