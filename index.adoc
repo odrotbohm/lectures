@@ -1,11 +1,15 @@
-= TU Dresden lectures
-Oliver Gierke
+= Lectures
+Oliver Drotbohm
 :revdate: {docdatetime}
 :sectids!:
 :sectanchors: true
 
+[[htw]]
+== HTW Dresden
+* link:spring/[Spring – A Java Application Framework]
+
 [[se]]
-== Software Engineering - Summer semester
+== TU Dresden – Software Engineering - Summer semester
 * link:overview/intro.pdf[Overview / Intro]
 * link:java-tooling/[Fundamentals of Java Tooling]
 * link:collaborative-sd/[Collaborative Software Development]
@@ -13,6 +17,6 @@ Oliver Gierke
 * link:ddd-and-spring/[Domain-Driven Design and Spring]
 
 [[se-lab]]
-== Software Engineering Lab - Winter semester
+== TU Dresden – Software Engineering Lab - Winter semester
 * link:spring-webapps/[Web applications with Java and Spring]
 * link:spring-webapps-old/[Web applications with Java and Spring (until WS 2015)]

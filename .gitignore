@@ -4,3 +4,5 @@ images/graphics/*.png
 target/
 .settings/
 *.html
+*.cache
+diag-*.png

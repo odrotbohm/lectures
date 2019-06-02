@@ -1,0 +1,317 @@
+= Spring – A Java Application Framework
+Oliver Drotbohm
+:doctype: book
+:revdate: {docdatetime}
+:revremark: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+:numbered:
+:sectnumlevels: 2
+:experimental:
+:source-highlighter: highlightjs
+:highlightjsdir: ../js/highlight
+:highlightjs-theme: atom-one-dark-reasonable
+:sectids!:
+:sectanchors: true
+:icons: font
+:toc:
+:toclevels: 3
+:livebase: http://static.olivergierke.de/lectures
+:imagesdir: images
+
+[abstract]
+:numbered!:
+= Abstract
+Frameworks are ubiquitous in todays software development world.
+They help developers to focus on implementing business code and and abstract and implement technical aspects aspects of programming.
+They effectively form an instance of the concept of practical reuse in software engineering.
+
+A major challenge in developing and using frameworks is the coupling introduced between the software component being developed and the framework, whose development is usually not controlled by the entity developing software with it.
+
+:numbered:
+[[intro]]
+== Introduction
+
+Spring Frameworkfootnote:spring[Spring Framework – https://spring.io[Project website]] is a Java application framework started in the early 2000s.
+Initially a bit of sample code of a book by Rod Johnsonfootnote:rod-johnson[Rod Johnson – https://en.wikipedia.org/wiki/Rod_Johnson_(programmer)[Wikipedia page]], it has become the most widely used framework in enterprise Java applications worldwide in retail, banks, insurance, automobile and entertainment industriesfootnote:netflix-spring[Netflix OSS and Spring Boot coming full circle – https://medium.com/netflix-techblog/netflix-oss-and-spring-boot-coming-full-circle-4855947713a0[Blog]].
+
+Since then it has grown from a already pretty sophisticated dependency injection container into an eco-system of frameworks that cover a broad set of use cases in application development.
+
+This script will give an overview about a Spring based web application and derive general traits of frameworks and the effects they have on application development.
+For a general comparison between libraries and frameworks as well as a step by step introduction into a Spring based web application see the link:{livebase}/frameworks-and-libraries/[Frameworks & Libraries] script.
+
+
+[[intro.sample]]
+=== The Guestbook sample project
+
+The https://github.com/st-tu-dresden/guestbook[Guestbook sample project] is an as simple as possible technology showcase for a Spring based web application originally developed for my work with the TU Dresden to showcase the following technical aspects:
+
+* A Java and Maven based web application following the MVC pattern.
+* A minimal domain model following Domain-Driven Designfootnote:ddd[Domain-Driven Design – https://en.wikipedia.org/wiki/Domain-driven_design[Wikipedia page]] (see `GuestbookEntry`, `GuestbookEntryRepository`).
+* Persistence of the domain model into a relational database.
+* Template based, server side view rendering with JavaScript based optimizations (progressive enhancement).
+* Secured access to partial, administrative functionality.
+* General structure of a web based application as far as this simple example allows.
+
+The parts of the Spring Framework ecosystem that are involved are the following
+
+* Spring Boot – for general application configuration, conventions and defaulting.
+* Spring Data JPA – for relational database access via the repository abstraction.
+* Spring Security – to implement secured access to parts of the functionality.
+
+[[frameworks]]
+== Frameworks
+
+[[frameworks.goals]]
+=== Goals of frameworks
+
+. __Separation of concernsfootnote:soc[Sepearation of Soncerns – https://en.wikipedia.org/wiki/Separation_of_concerns[Wikipedia page]]__ -- Developers should be able to concentrate on modeling and implementing the business domain.
+I.e. we want to separate technical aspects of the implementation (database access etc.) from the ones of the business logic and reduce the amount of technical code to be written in the first place.
+. __Raising the abstraction level__ -- Code should be written in a way that within a class or component it's based on the same level of abstraction as otherwise it's hard to understand and reason about.
+. __Remove boilerplate code__ -- Developers usually don't appreciate to have to code a lot of repeated code to achieve simple tasks.
+
+
+[[spring]]
+== Spring Framework
+
+[[spring.di]]
+=== Dependency Injection
+
+Dependency Injection (DI) footnote:di[Dependency Injection – https://en.wikipedia.org/wiki/Dependency_injection[Wikipedia page]]footnote:spring-ioc[Inversion of Control –  {livebase}/frameworks-and-libraries/#spring.ioc[Script "Frameworks & Libraries"]] is the idea that an object does not assemble its collaborators itself but exposes which ones it needs to work, usually via constructor arguments.
+A third party – manually written code or a so called DI container – then assembles the net of objects at application startup.
+The approach implements the Separation of Concernsfootnote:soc[] paradigm by separating the phases of object construction and usage and with that usually frees the objects from infrastructure concerns so that it can concentrate on implementing business logic.
+
+[source, java]
+----
+class MyService {
+
+  private final MyRepository repository;
+
+  MyService(MyRepository repository) { <1>
+    this.repository = repository;
+  }
+
+  void someBusinessMethod(…) {
+    this.repository.save(new MyEntity());
+  }
+}
+
+class MyRepository {
+  MyEntity save(MyEntity entity);
+}
+
+// Manual dependency injection
+MyRepository repository = new MyRepository(…);
+MyService service = new MyService(repository); <2>
+----
+<1> `MyService` expresses a dependency to `MyRepository` instead of creating it itself.
+<2> The manual setup code now hands an instance of `MyRepository` to the service instance to be created.
+
+[plantuml]
+----
+class MyService {
+  -repository : MyRepository
+  +someBusinessMethod() : void
+}
+class MyRepository {
+  …
+}
+
+MyService --> MyRepository
+----
+
+[[spring.di.why]]
+==== Why use a framework?
+
+First and foremost, using a Dependency Injection framework has the benefit of removing the need to manually code the wiring of objects, i.e. it saves boilerplate code (see <<frameworks.goals>>).
+It also enables the framework to wrap the dependency into a decorating adapter, to apply technical services to the managed code (see <<spring.psa>>).
+
+[source, java]
+----
+package com.acme;
+
+@Component <1>
+class MyService { … }
+
+@Component <1>
+class MyRepository { … }
+
+// Spring-driven dependency injection
+ApplicationContext context = new AnnotationConfigApplicationContext("com.acme"); <2>
+MyService service = context.getBean(MyService.class); <3>
+----
+<1> Classes are annotated with framework specific annotations so that it can discover the components of an application that it's supposed to handle.
+<2> The detection is triggered by bootstrapping the framework pointing it to the code written by the user.
+<3> Framework API is then used to access the components. Note, that usually this last step can be avoided completely as the framework bootstraps e.g. a web component that will map incoming requests to user components (see <<spring.mvc>>).
+
+[[spring.psa]]
+=== Portable Services Abstraction
+
+Spring Framework helps implementing technical aspects of the application like security and transactions in a declarative way by providing annotations to capture settings for those aspects.
+When creating the object tree, it then decorates the instance
+
+[[spring.psa.security-transactions]]
+==== Security & Transactions
+
+[source, java]
+----
+@Component
+class MyService {
+
+  @PreAuthorize("hasRole('ADMIN')") <1>
+  void someBusinessMethod(…) {
+    this.repository.save(new MyEntity());
+  }
+}
+
+@Component
+class MyRepository {
+
+  @Transactional <2>
+  MyEntity save(MyEntity entity);
+}
+----
+<1> Express that `someBusinessMethod(…)` is supposed to be only used by administrators.
+<2> Expresses that all database operations happening within `save(…)` are supposed to be transactional, i.e. atomic.
+
+Note, how we don't have to write code ourselves that makes all this happen.
+We just declare what we want to happen and the framework takes care of actually implementing it.
+
+[[spring.psa.implementation]]
+==== Implementation details
+
+The application of the technical services is implemented using the proxy patternfootnote:proxy[Proxy pattern – https://en.wikipedia.org/wiki/Proxy_pattern[Wikipedia page]] in which a proxy for the target component is generated at runtime. A chain of interceptorsfootnote:interceptor[Interceptor pattern – https://en.wikipedia.org/wiki/Interceptor_pattern[Wikipedia page]] is computed at bootstrap time and handles the technical concerns (in this particular case the management of a transaction).
+The framework creates an instance of the target component enriched with additional functionality and injects that into the client component.
+This can only be achieved as the client component avoids an active lookup or creation of the collaborating component itself.
+
+.Invocation flow for on a proxied component
+[plantuml]
+----
+participant MyService <<Component>> #lightblue
+
+MyService -> MyRepositoryProxy : someBusinessMethod()
+activate MyRepositoryProxy
+
+box "Interceptor chain"
+  participant TransactionInterceptor
+  participant "…"
+end box
+
+MyRepositoryProxy -> TransactionInterceptor
+TransactionInterceptor -> "…" : invocation.proceed()
+participant MyRepository <<Component>> #lightblue
+"…" -> MyRepository
+"…" <- MyRepository
+TransactionInterceptor <- "…"
+MyRepositoryProxy <- TransactionInterceptor
+MyService <- MyRepositoryProxy
+deactivate MyRepositoryProxy
+----
+
+The actual implementation is based on Spring Framework's `ProxyFactory` that makes it easy to decorate target instances with generic `MethodInterceptor` implementations that use of Aspect-oriented Programming (AOP)footnote:aop[Aspect-oriented programming – https://en.wikipedia.org/wiki/Aspect-oriented_programming[Wikipedia page]] and reflectionfootnote:reflection[Reflection -- https://en.wikipedia.org/wiki/Reflection_(computer_programming)[Wikipedia page]].
+
+.A simplified example of a generic method interceptor to handle transactions
+[source, java]
+----
+class TransactionInterceptor implements MethodInterceptor {
+
+  @Override
+  public Object invoke(MethodInvocation invocation) throws Throwable {
+
+    // Start transaction
+    Transaction transaction = …
+
+    try {
+
+      Object result = invocation.proceed();
+
+      transaction.commit()
+
+      return result;
+
+    } catch (RuntimeException e) {
+      transaction.rollback()
+    }
+  }
+}
+
+// Wrapping the application component into a transactional proxy
+MyRepository repository = new MyRepository();
+ProxyFactory factory = new ProxyFactory(repository);
+factory.addAdvice(new TransactionInterceptor());
+
+MyRepository proxy = factory.getProxy();
+----
+
+[[spring.mvc]]
+=== Spring MVC
+
+.A SpringMVC REST controller
+[source, java]
+----
+@RestController <1>
+class MyController {
+
+  @GetMapping("/hello") <2>
+  String sayHelloTo(@RequestParam Optional<String> name) { <3>
+    return String.format("Hello, %s!", name.orElse("world"));
+  }
+}
+----
+<1> An annotation to make the component known to the framework and assign it a given role (here: a Spring WebMVC controller).
+<2> An annotation to map an incoming web request with the configured path to the annotated method. Method parameters can be used to access different parts of the requests like headers, request parameters etc.
+<3> An annotated parameter to express we want to get access to the request parameter named `name`. Wrapped into an `Optional` as the request might not include that parameter and we have to handle that case in the implementation.
+
+The above shown controller class causes the following HTTP requests handled like this:
+
+[source]
+----
+GET /hello          -> Hello, world!
+GET /hello?name=BB8 -> Hello, BB8!
+----
+
+[[using-frameworks]]
+== Using Frameworks
+
+[[using-frameworks.reuse-vs-coupling]]
+=== Reuse versus coupling
+
+Traditionally code reuse has been a topic of focus as it promised economics of scale: the code a team does not have to write, it can spend on business problems.
+The downside of this approach is that the client code has to opt into the design decisions of the serving code which creates coupling.
+
+.A client component using another component
+[plantuml]
+----
+[A] ..> [B] : use
+----
+
+Frameworks usually react to this challenge by exposing very generic concepts and means to configure the framework which makes it adaptable to different client's needs.
+However, this in turn means that there's the need to configure the framework which couples the clients to the framework.
+
+.An application configuring the framework
+[plantuml]
+----
+Configuration - [Framework]
+[Application] ..> Configuration
+----
+
+These challenges get elevated if a framework is used by a lot of clients as it has to balance all the different requirements that those have.
+
+.Multiple applications using the framework
+[plantuml]
+----
+[Application] ..> [Framework]
+[Application'] ..> [Framework]
+[Application''] ..> [Framework]
+[Application'''] ..> [Framework]
+----
+
+[[using-frameworks.java]]
+=== Java and the enterprise
+
+Java is the most widely used programming language globallyfootnote:tiobe[TIOBE index – https://www.tiobe.com/tiobe-index/[Website]] and used in a lot of enterprises that exceed a certain organizational size (banks, insurances, automotive) or provide products that require software to scale significantly (retail, entertainment).
+These companies are usually driven by different trade-offs than e.g. startup companies:
+
+* __Security of investment__ -- Enterprise software systems usually have a life cycle of decades. That means that enterprises have the need to choose technologies that will be around a couple of years ago.
+The availability of developers able to work with that technology is another aspect of this.
+It's also important to ship bug- and security fixed at a reasonable pace so that existing systems stay safe.
+* __Backwards compatibility and stability__ -- The just mentioned aspect is usually reflected in the choice of technology that has proven to ship stable, non-breaking releases containing new features.
+* __Availability of support__ -- Last but not least the backing of a commercial entity is usually required as a means of risk mitigation in case problems arise, teams run into bugs etc.

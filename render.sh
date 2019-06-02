@@ -1,2 +1,2 @@
 #!/bin/bash
-find . -name "index.adoc" -exec asciidoctor {} \;
+find . -name "index.adoc" -exec asciidoctor -r asciidoctor-diagram {} \;
