@@ -16,6 +16,7 @@ Oliver Drotbohm
 :toclevels: 3
 :livebase: http://static.olivergierke.de/lectures
 :imagesdir: images
+:plantuml-format: svg
 
 [abstract]
 :numbered!:
@@ -25,6 +26,8 @@ They help developers to focus on implementing business code and and abstract and
 They effectively form an instance of the concept of practical reuse in software engineering.
 
 A major challenge in developing and using frameworks is the coupling introduced between the software component being developed and the framework, whose development is usually not controlled by the entity developing software with it.
+
+The slides to present this script can be found link:spring-a-java-application-framework.pdf[here].
 
 :numbered:
 [[intro]]
@@ -95,8 +98,14 @@ class MyService {
   }
 }
 
-class MyRepository {
+interface MyRepository {
   MyEntity save(MyEntity entity);
+}
+
+class JpaRepository implements MyRepository {
+
+  @Override
+  MyEntity save(MyEntity entity) { … }
 }
 
 // Manual dependency injection
@@ -106,18 +115,24 @@ MyService service = new MyService(repository); <2>
 <1> `MyService` expresses a dependency to `MyRepository` instead of creating it itself.
 <2> The manual setup code now hands an instance of `MyRepository` to the service instance to be created.
 
-. Logical structure of application components
-[plantuml]
+.Logical structure of application components
+[plantuml, components]
 ----
 class MyService {
   -repository : MyRepository
   +someBusinessMethod() : void
 }
-class MyRepository {
-  …
+
+interface MyRepository {
+  MyEntity save(entity : MyEntity)
 }
 
-MyService --> MyRepository
+class JpaRepository {
+  MyEntity save(entity : MyEntity)
+}
+
+MyService -right-> MyRepository
+JpaRepository .left.|> MyRepository
 ----
 
 [[spring.di.why]]
@@ -135,7 +150,7 @@ package com.acme;
 class MyService { … }
 
 @Component <1>
-class MyRepository { … }
+class JpaRepository { … }
 
 // Spring-driven dependency injection
 ApplicationContext context = new AnnotationConfigApplicationContext("com.acme"); <2>
@@ -160,6 +175,10 @@ When creating the object tree, it then decorates the instance
 @Component
 class MyService {
 
+  private final MyRepository repository;
+
+  …
+
   @PreAuthorize("hasRole('ADMIN')") <1>
   void someBusinessMethod(…) {
     this.repository.save(new MyEntity());
@@ -167,10 +186,10 @@ class MyService {
 }
 
 @Component
-class MyRepository {
+class JpaRepository implements MyRepository {
 
   @Transactional <2>
-  MyEntity save(MyEntity entity);
+  MyEntity save(MyEntity entity) { … }
 }
 ----
 <1> Express that `someBusinessMethod(…)` is supposed to be only used by administrators.
@@ -178,6 +197,7 @@ class MyRepository {
 
 Note, how we don't have to write code ourselves that makes all this happen.
 We just declare what we want to happen and the framework takes care of actually implementing it.
+It's also worth mentioning that the annotations are the only Spring dependencies of the code, i.e. there's only a very thin connection between user code and the framework.
 
 [[spring.psa.implementation]]
 ==== Implementation details
@@ -186,12 +206,41 @@ The application of the technical services is implemented using the proxy pattern
 The framework creates an instance of the target component enriched with additional functionality and injects that into the client component.
 This can only be achieved as the client component avoids an active lookup or creation of the collaborating component itself.
 
-.Invocation flow for on a proxied component
-[plantuml]
+.Type and object structure at runtime
+[plantuml, runtime]
 ----
-participant MyService <<Component>> #lightblue
+class MyService <<Component>> #lightblue {
+  -repository : MyRepository
+}
 
-MyService -> MyRepositoryProxy : someBusinessMethod()
+interface MyRepository #lightblue
+
+class MyRepositoryProxy {
+  -delegate : JpaRepository
+}
+note left: Provided by Spring\n at runtime
+
+class JpaRepository <<Component>> #lightblue implements MyRepository
+
+MyService .down.> MyRepository
+MyService --> MyRepositoryProxy
+MyRepositoryProxy .up.|> MyRepository
+MyRepositoryProxy .right.> JpaRepository
+----
+Note, how `MyRepositoryProxy` implements `MyRepository` so that it can act as a replacement for the user provided `JpaRepository` within `MyService`.
+
+The actual implementation is created by Spring Framework's `ProxyFactory` that makes it easy to decorate target instances with generic `MethodInterceptor` implementations that use of Aspect-oriented Programming (AOP)footnote:aop[Aspect-oriented programming – https://en.wikipedia.org/wiki/Aspect-oriented_programming[Wikipedia page]] and reflectionfootnote:reflection[Reflection -- https://en.wikipedia.org/wiki/Reflection_(computer_programming)[Wikipedia page]] at runtime.
+
+.Invocation flow for on a proxied component
+[plantuml, proxy-interaction]
+----
+hide footbox
+
+participant MyService <<Component>> #lightblue
+participant MyRepositoryProxy
+
+[-> MyService: someBusinessMethod()
+MyService -> MyRepositoryProxy : save(…)
 activate MyRepositoryProxy
 
 box "Interceptor chain"
@@ -201,16 +250,14 @@ end box
 
 MyRepositoryProxy -> TransactionInterceptor
 TransactionInterceptor -> "…" : invocation.proceed()
-participant MyRepository <<Component>> #lightblue
-"…" -> MyRepository
-"…" <- MyRepository
+participant JpaRepository <<Component>> #lightblue
+"…" -> JpaRepository
+"…" <- JpaRepository
 TransactionInterceptor <- "…"
 MyRepositoryProxy <- TransactionInterceptor
 MyService <- MyRepositoryProxy
 deactivate MyRepositoryProxy
 ----
-
-The actual implementation is based on Spring Framework's `ProxyFactory` that makes it easy to decorate target instances with generic `MethodInterceptor` implementations that use of Aspect-oriented Programming (AOP)footnote:aop[Aspect-oriented programming – https://en.wikipedia.org/wiki/Aspect-oriented_programming[Wikipedia page]] and reflectionfootnote:reflection[Reflection -- https://en.wikipedia.org/wiki/Reflection_(computer_programming)[Wikipedia page]].
 
 .A simplified example of a generic method interceptor to handle transactions
 [source, java]
@@ -225,7 +272,7 @@ class TransactionInterceptor implements MethodInterceptor {
 
     try {
 
-      Object result = invocation.proceed();
+      Object result = invocation.proceed(); <1>
 
       transaction.commit()
 
@@ -239,12 +286,13 @@ class TransactionInterceptor implements MethodInterceptor {
 }
 
 // Wrapping the application component into a transactional proxy
-MyRepository repository = new MyRepository();
+JpaRepository repository = new JpaRepository();
 ProxyFactory factory = new ProxyFactory(repository);
 factory.addAdvice(new TransactionInterceptor());
 
 MyRepository proxy = factory.getProxy();
 ----
+<1> The call triggers all other interceptors in the chain and the invocation of the method on the final target instance eventually.
 
 [[spring.mvc]]
 === Spring MVC
@@ -286,7 +334,7 @@ Traditionally code reuse has been a topic of focus as it promised economics of s
 The downside of this approach is that the client code has to opt into the design decisions of the serving code which creates coupling.
 
 .A client component using another component
-[plantuml]
+[plantuml, coupling-1]
 ----
 [A] ..> [B] : use
 ----
@@ -295,7 +343,7 @@ Frameworks usually react to this challenge by exposing very generic concepts and
 However, this in turn means that there's the need to configure the framework which couples the clients to the framework.
 
 .An application configuring the framework
-[plantuml]
+[plantuml, coupling-2]
 ----
 Configuration - [Framework]
 [Application] ..> Configuration
@@ -304,7 +352,7 @@ Configuration - [Framework]
 These challenges get elevated if a framework is used by a lot of clients as it has to balance all the different requirements that those have.
 
 .Multiple applications using the framework
-[plantuml]
+[plantuml, coupling-3]
 ----
 [Application] ..> [Framework]
 [Application'] ..> [Framework]
@@ -323,3 +371,112 @@ The availability of developers able to work with that technology is another aspe
 It's also important to ship bug- and security fixed at a reasonable pace so that existing systems stay safe.
 * __Backwards compatibility and stability__ -- The just mentioned aspect is usually reflected in the choice of technology that has proven to ship stable, non-breaking releases containing new features.
 * __Availability of support__ -- Last but not least the backing of a commercial entity is usually required as a means of risk mitigation in case problems arise, teams run into bugs etc.
+
+////
+== Diagrams
+
+[plantuml, di-1]
+----
+class MyService {
+  +someBusinessMethod() : void
+}
+class MyRepository {
+  +save(entity : MyEntity) : MyEntity
+}
+
+MyService -right-> MyRepository
+----
+
+[plantuml, di-2]
+----
+class MyService {
+  -repository : MyRepository
+  +someBusinessMethod() : void
+}
+class MyRepository {
+  +save(entity : MyEntity) : MyEntity
+}
+
+MyService -right-> MyRepository
+----
+
+[plantuml, di-3]
+----
+class MyService {
+  -repository : MyRepository
+  +MyService()
+  +someBusinessMethod() :void
+}
+class MyRepository {
+  +save(entity : MyEntity) : MyEntity
+}
+
+MyService -right-> MyRepository
+----
+
+[plantuml, di-4]
+----
+class MyService {
+  -repository : MyRepository
+  +MyService(MyRepository : repository)
+  +someBusinessMethod() : void
+}
+class MyRepository {
+  +save(entity : MyEntity) : MyEntity
+}
+
+MyService -right-> MyRepository
+----
+
+[plantuml, di-5]
+----
+class MyService {
+  -repository : MyRepository
+  +someBusinessMethod() : void
+}
+interface MyRepository {
+  +save(entity : MyEntity) : MyEntity
+}
+class JpaRepository {
+  +save(entity : MyEntity) : MyEntity
+}
+
+MyService -right-> MyRepository
+JpaRepository .left.|> MyRepository
+----
+
+[plantuml, di-6]
+----
+class MyService {
+  -repository : MyRepository
+  +someBusinessMethod() : void
+}
+interface MyRepository {
+  +save(entity : MyEntity) : MyEntity
+}
+class JpaRepository {
+  +save(entity : MyEntity) : MyEntity
+}
+class DummyRepository {
+  +save(entity : MyEntity) : MyEntity
+}
+
+
+MyService -right-> MyRepository
+JpaRepository .left.|> MyRepository
+DummyRepository .up.|> MyRepository
+----
+
+[plantuml, di-0]
+----
+skinparam packageStyle rectangle
+
+package "business" {
+  class MyService
+}
+
+package "data access" {
+  class MyRepository
+}
+----
+////

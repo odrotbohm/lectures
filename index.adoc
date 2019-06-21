@@ -6,7 +6,7 @@ Oliver Drotbohm
 
 [[htw]]
 == HTW Dresden
-* link:spring/[Spring – A Java Application Framework]
+* link:spring/[Spring – A Java Application Framework (Script)], Slides: link:spring/spring-a-java-application-framework.pdf[PDF]
 
 [[se]]
 == TU Dresden – Software Engineering - Summer semester
