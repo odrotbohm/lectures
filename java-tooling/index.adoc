@@ -328,6 +328,13 @@ image::images/eclipse-maven-dependency-hierarchy.png[]
 As you can see, Moneta depends on `money-api` and `javax.annotation-api` in turn and the dependencies have been resolved. Also, we've declared another dependency to JUnit in version 4.12. We defined it to be a test scope dependency. This means it will not be available when compiling production code. Also it will not be packaged with the application as it's not needed at runtime but only for the execution of tests.
 
 [appendix]
+[[appendix.recommended-reading]]
+== Recommended literature
+
+* Head First Java, 2nd edition. Sierra. O'Reilly, 2005. https://www.amazon.de/Head-First-Java-2nd-Second/dp/B008GB1BU8[Book at Amazon]
+* Java by Comparison: Become a Java Craftsman in 70 Examples. Harrer, Lenhard, Dietz. O'Reilly, 2018. https://www.amazon.de/Java-Comparison-Become-Craftsman-Examples/dp/1680502875[Book at Amazon]
+
+[appendix]
 [[appendix.shortcuts]]
 == Keyboard shortcuts
 
