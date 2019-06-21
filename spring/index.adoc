@@ -79,6 +79,7 @@ Dependency Injection (DI) footnote:di[Dependency Injection – https://en.wikipe
 A third party – manually written code or a so called DI container – then assembles the net of objects at application startup.
 The approach implements the Separation of Concernsfootnote:soc[] paradigm by separating the phases of object construction and usage and with that usually frees the objects from infrastructure concerns so that it can concentrate on implementing business logic.
 
+.An application component depending on another
 [source, java]
 ----
 class MyService {
@@ -105,6 +106,7 @@ MyService service = new MyService(repository); <2>
 <1> `MyService` expresses a dependency to `MyRepository` instead of creating it itself.
 <2> The manual setup code now hands an instance of `MyRepository` to the service instance to be created.
 
+. Logical structure of application components
 [plantuml]
 ----
 class MyService {
@@ -124,6 +126,7 @@ MyService --> MyRepository
 First and foremost, using a Dependency Injection framework has the benefit of removing the need to manually code the wiring of objects, i.e. it saves boilerplate code (see <<frameworks.goals>>).
 It also enables the framework to wrap the dependency into a decorating adapter, to apply technical services to the managed code (see <<spring.psa>>).
 
+.Spring managed application components
 [source, java]
 ----
 package com.acme;
@@ -151,6 +154,7 @@ When creating the object tree, it then decorates the instance
 [[spring.psa.security-transactions]]
 ==== Security & Transactions
 
+.Spring components using services like security and transactions
 [source, java]
 ----
 @Component
@@ -229,6 +233,7 @@ class TransactionInterceptor implements MethodInterceptor {
 
     } catch (RuntimeException e) {
       transaction.rollback()
+      throw e;
     }
   }
 }
@@ -243,6 +248,9 @@ MyRepository proxy = factory.getProxy();
 
 [[spring.mvc]]
 === Spring MVC
+
+Spring MVC is a web application framework that implements the Model View Controller pattern.
+It allows to implement controller classes equipped with mapping annotations to map HTTP requests into method invocations and bind request parameters and payloads to method arguments.
 
 .A SpringMVC REST controller
 [source, java]
