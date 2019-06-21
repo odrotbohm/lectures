@@ -1,4 +1,4 @@
-# Fundamentals of Java Development Tooling
+= Fundamentals of Java Development Tooling
 Oliver Gierke
 :revdate: {docdatetime}
 :revremark: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -17,20 +17,20 @@ image:https://travis-ci.org/olivergierke/lectures.svg?branch=master["Build Statu
 :numbered!:
 [preface]
 [[intro]]
-## Introduction
+== Introduction
 
 This script should help you to get started with the fundamental tooling to support you when developing Java applications. Well cover the basic setup and usage of integrated development environments (IDEs) and build systems.
 
 NOTE: Sections marked with this icon icon:lightbulb-o[] will define tasks that you should try yourself to get a better feel for the way things work.
 
 [[intro.resources]]
-### Resources
+=== Resources
 
 * https://github.com/olivergierke/lectures[Script repository] - in case you want to file tickets for improvements.
 * link:{livebase}/java-tooling[Script] - the rendered version of it.
 
 [[intro.objectives]]
-### Objectives
+=== Objectives
 
 After working through this script you should've done -- or at least be able to do the following things:
 
@@ -42,13 +42,13 @@ After working through this script you should've done -- or at least be able to d
 
 :numbered:
 [[prerequisites]]
-## Infrastructure prerequisites
+== Infrastructure prerequisites
 * http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html[JDK 8]
 * https://eclipse.org/downloads/[Eclipse] / https://spring.io/tools/sts[STS] - Adds Spring Framework specific tooling
 * http://maven.apache.org/download.cgi[Maven] (optional) -> to execute the build at the command line (for continuous integration, release builds)
 
 [[quick-start]]
-## Quick start
+== Quick start
 
 We're gonna create a new project within Eclipse here. This will be a Maven based project (see <<build.maven>>) for details.
 
@@ -83,12 +83,12 @@ public static void main(String... args) {
 * see `Hello world!` printed to the console.
 
 [[ide]]
-## Eclipse
+== Eclipse
 
 Eclipse is an integrated development environment (IDE). It's primarily used for Java development but can be equipped with plugins to develop software in other languages as well. Other IDEs available for Java development are https://www.jetbrains.com/idea/download/[IntelliJ IDEA] and https://netbeans.org/downloads/[Netbeans].
 
 [[ide.advantages]]
-### Advantages of using an IDE
+=== Advantages of using an IDE
 
 * *Quick code base navigation* - IDEs allow you to navigate the code base in a semantic way by referring to types, methods, fields etc.
 * *Code editing / refactoring* - Because the code you write is structurally and semantically analyzed, the IDE can help you write code quicker and avoid typing mistakes, manage the needed imports analyzing your classpath. Also changes to the code base can be executed in a way that the IDE makes sure they're applied consistently like method or field renames. Also, IDEs usually compile code on the fly and are even capable of partially compiling code bases. This provides instant feedback about programming mistakes.
@@ -97,7 +97,7 @@ Eclipse provides so called "Save actions" which -- as the name suggests -- are e
 * *Executing code* - IDEs allow you to run the application or parts of it right from within the IDE. This especially comes in handy when working with test cases.
 
 [[ide.views-and-perspectives]]
-### Views and perspectives
+=== Views and perspectives
 
 Core UI concepts are views that can be arranged in a certain way to make up a perspective.
 
@@ -117,14 +117,14 @@ Core UI concepts are views that can be arranged in a certain way to make up a pe
 ** image:images/display_view.gif[] Display - live code execution within the current context
 
 [[build]]
-## Project build
+== Project build
 
 Compiling a set of Java classes is usually not enough to actually run software in production. The application needs to be assembled, integration tested, documentation needs to be created, bundled and published. This is where build systems come into play.
 
 A build system allows users to declare and configure individual elements of a build process. The predominant build systems in the Java space are https://maven.apache.org[Maven] and https://gradle.org/[Gradle]. Maven is currently the most widely used one although Gradle's been gaining a lot of traction recently. The latter is quite a bit more flexible when it comes to more advanced requirements in a project build. As we're not going to need this flexibility here we're going to stay with Maven for this lecture.
 
 [[build.maven]]
-### Maven
+=== Maven
 
 https://maven.apache.org[Maven] is currently the predominant tool to build Java based software projects. It's centered around the notion of a Project Object Model (POM) to describe the project, its dependencies and which steps shall be executed during the build.
 
@@ -205,7 +205,7 @@ $ mvn clean install
 See the project build executed in the console, tests being executed.
 
 [build.maven.configuration]
-#### Build configuration
+==== Build configuration
 
 The build is configured using an XML document called `pom.xml` in the project root. It contains the artifact coordinates (see <<build.maven.dependency-management>> for details), project metadata, dependencies and build plugin configuration.
 
@@ -259,7 +259,7 @@ Note, that the project root folder needs to be imported which might be a differe
 TIP: Remove the compiler plugin declaration from the `pom.xml` and refresh the project. See how the JRE System Library node changes back to Java 1.5 (Maven's default). Re-add the plugin declaration, update again and see how it changes back to 1.8 due to our definition of source and target level.
 
 [[build.maven.project-structure]]
-#### Project structure
+==== Project structure
 
 Maven defines a common project structure to make it easy to decide which files go where. By default Maven uses the following structure:
 
@@ -269,7 +269,7 @@ Maven defines a common project structure to make it easy to decide which files g
 * `src/test/resources` - Test configuration files and resources.
 
 [[build.maven.dependency-management]]
-#### Dependency management
+==== Dependency management
 
 One of the primary factors of Java being the most widely used programming language in the world is the ecosystem of libraries available. Almost any kind of technical problem has an implemented solution available. So a Java application will - almost by definition - use quite a few of these already existing libraries.
 
@@ -319,7 +319,7 @@ The sources and JavaDoc being present is caused by the IDE being configured to r
 image::images/eclipse-maven-sources.png[]
 ====
 
-##### Transitive dependencies
+===== Transitive dependencies
 
 Maven dependencies can of course in turn have dependencies themselves. This creates a tree of dependencies that will all be resolved by Maven automatically. To get an impression of the structure of dependencies, open the `pom.xml` in Eclipse and select the "Dependency hierarchy" tab at the bottom of the editor.
 
@@ -329,9 +329,9 @@ As you can see, Moneta depends on `money-api` and `javax.annotation-api` in turn
 
 [appendix]
 [[appendix.shortcuts]]
-## Keyboard shortcuts
+== Keyboard shortcuts
 
-### Code base navigation
+=== Code base navigation
 
 * kbd:[⌘+⇧+T] - Open type (supports `*` and camel case lookups, e.g `ArLi` matches `ArrayList`)
 * kbd:[⌘+⇧+R] - Open resource (like Open Type but also includes non-code source files)
@@ -340,7 +340,7 @@ As you can see, Moneta depends on `money-api` and `javax.annotation-api` in turn
 * kbd:[⌘+⇧+G] - Search for references in the workspace.
 * kbd:[⌃+⌥+H] - Find code that calls the selected method.
 
-### Code editing / refactoring
+=== Code editing / refactoring
 
 * kbd:[⌃+Space] - Code completion for methods, type names, variables
 * kbd:[⌘+1] - Quick fix
@@ -350,7 +350,7 @@ As you can see, Moneta depends on `money-api` and `javax.annotation-api` in turn
 * kbd:[⌥+⌘+T] - Refactoring… (select menu item).
 * kbd:[⌥+⌘+R] - Quick rename.
 
-### Executing code
+=== Executing code
 
 * kbd:[⌥+⌘+X] - eXecute…
 ** kbd:[J] - Java Application.
@@ -361,14 +361,14 @@ As you can see, Moneta depends on `money-api` and `javax.annotation-api` in turn
 * kbd:[⌘+⇧+F11] - eXecute last launch configuration.
 * kbd:[⌘+F11] - Debug last launch configuration.
 
-### Maven
+=== Maven
 
 * kbd:[⌥+F5] - Update project configuration
 
-### Miscellaneous
+=== Miscellaneous
 ** kbd:[⌘+3] - Quick access (to trigger almost any IDE functionality)
 
 [appendix]
 [[appendix.license]]
-## License
+== License
 image::https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png[link="http://creativecommons.org/licenses/by-nc-sa/4.0/"]
