@@ -78,7 +78,7 @@ To achieve that Spring MVC provides a variety of annotations to allow us to defi
 @Controller <1>
 class MyController {
 
-  @RequestMapping(path = "/hello", method = RequestMethod.GET) <2>
+  @GetMapping("/hello") <2>
   void myMethod(@RequestParam Optional<String> name) {} <3>
 }
 ----
