@@ -1,19 +1,18 @@
 = Web application development with Java and Spring
-Oliver Gierke
+Oliver Drotbohm
 :revdate: {docdatetime}
 :revremark: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 :numbered:
 :experimental:
 :sectids!:
 :sectanchors: true
-:source-highlighter: prettify
 :icons: font
-:toc:
+:toc: left
 :imagesdir: images
 
 This documents summarizes the content of a lecture I held at TU Dresden in support of the Software Engineering Lab.
 Its primary goal is to ramp up the students with the very basics of Java web application development.
-If you're looking for the script used in years 2014 and 2015, it's been relocated to http://static.olivergierke.de/lectures/spring-webapps-old/[here].
+If you're looking for the script used in years 2014 and 2015, it's been relocated to link:../../lectures/spring-webapps-old/[here].
 
 :numbered!:
 [preface]
@@ -32,17 +31,17 @@ We're then going to have a look at how to integrate business code with the code 
 Once that's done we're exploring what the Guestbook sample applicationfootnote:[Guestbook sample application -- https://github.com/st-tu-dresden/guestbook[GitHub repository]] consists of.
 We're then going to cover aspects of Spring Data JPA to implement persistence and Spring MVC for the web layer.
 
-The source document for this script can be found in https://github.com/olivergierke/spring-webapps[this GitHub repository]. Feel free to create tickets for improvements or provide patches via pull requests.
+The source document for this script can be found in https://github.com/odrotbohm/lectures[this GitHub repository]. Feel free to create tickets for improvements or provide patches via pull requests.
 
 [[introduction.prerequisites]]
 === Prerequisites
 
 This script assumes you've worked through the scripts of the summer semester:
 
-1. http://static.olivergierke.de/lectures/java-tooling/[Fundamentals of Java Tooling] -- will ramp you up on the most fundamental tools you're gonna be working with when developing Java applications: IDEs, build tools etc.
-2. http://static.olivergierke.de/lectures/frameworks-and-libraries/[Frameworks & Libraries] -- will ramp you up on the topic of how to work with libraries and frameworks with Spring as application framework in particular.
-3. http://static.olivergierke.de/lectures/ddd-and-spring/[Domain-Driven Design & Spring] -- will ramp you up on the fundamental concepts of Domain-Driven Design and how those concepts are reflected in Spring Framework applications.
-4. http://static.olivergierke.de/lectures/collaborative-sd/[Collaborative Software Development] (optional) -- will ramp you up on tools and methodologies used when writing software in a team.
+1. link:../../lectures/java-tooling/[Fundamentals of Java Tooling] -- will ramp you up on the most fundamental tools you're gonna be working with when developing Java applications: IDEs, build tools etc.
+2. link:../../lectures/frameworks-and-libraries/[Frameworks & Libraries] -- will ramp you up on the topic of how to work with libraries and frameworks with Spring as application framework in particular.
+3. link:../../lectures/ddd-and-spring/[Domain-Driven Design & Spring] -- will ramp you up on the fundamental concepts of Domain-Driven Design and how those concepts are reflected in Spring Framework applications.
+4. link:../../lectures/collaborative-sd/[Collaborative Software Development] (optional) -- will ramp you up on tools and methodologies used when writing software in a team.
 
 :numbered:
 
@@ -74,7 +73,7 @@ To achieve that Spring MVC provides a variety of annotations to allow us to defi
 
 [title="Mapping a request"]
 ====
-[source, java]
+[source, java, title="`MyController.java` in package `example` under `src/main/java`"]
 ----
 @Controller <1>
 class MyController {
@@ -103,18 +102,18 @@ In an MVC context, a response is usually created by using a so called template, 
 
 [title="The controller selecting a view"]
 ====
-[source, java, title="MyController.java"]
+[source, java]
 ----
 @Controller
 class MyController {
 
-  @RequestMapping(path = "/hello", method = HttpMethod.GET)
+  @GetMapping("/hello")
   String myMethod(@RequestParam Optional<String> name) { <1>
     return "hello"; <2>
   }
 }
 ----
-[source,html, title="template/hello.html"]
+[source,html, title="`template/hello.html` in `src/main/resources`"]
 ----
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -143,10 +142,11 @@ Spring MVC provides a programmatic abstraction for that which can be accessed by
 @Controller
 class MyController {
 
-  @RequestMapping(path = "/hello", method = RequestMethod.GET)
+  @GetMapping("/hello")
   String myMethod(@RequestParam Optional<String> name, Model model) { <1>
 
     model.addAttribute("name", name.orElse("World")); <2>
+
     return "hello";
   }
 }
@@ -187,14 +187,15 @@ A naïve approach might be to implement that particular logic directly in the co
 @Controller
 class MyController {
 
-  @RequestMapping(path = "/hello", method = RequestMethod.GET)
+  @GetMapping("/hello")
   String myMethod(@RequestParam Optional<String> name, Model model) {
 
-    String whoToGreet = name
+    var whoToGreet = name
       .map(it -> it.equals("TU Dresden") ? it.concat(", yay") : it) <1>
       .orElse("World");
 
     model.addAttribute("name", whoToGreet);
+
     return "hello";
   }
 }
@@ -209,22 +210,27 @@ The more concerns we mix together, the harder it will become to actually test ce
 Assume, we only wanted to test that `TU Dresden` gets translated into `TU Dresden, yay`.
 The test code would have to look something like this:
 
-[source, java, title="MyControllerUnitTest.java"]
+[title="A unit test for a Spring MVC controller"]
+====
+[source, java, title="`MyControllerUnitTest.java` in package `example` under `src/test/java`"]
 ----
-public class MyControllerUnitTests {
+import static org.assertj.core.api.Assertions.*;
+
+class MyControllerUnitTests {
 
   @Test
-  public void augmentsYayToTuDresden() {
+  void augmentsYayToTuDresden() {
 
-    MyController controller = new MyController();
+    var controller = new MyController();
 
-    Model model = new ExtendedModelMap();
+    var model = new ExtendedModelMap();
     controller.myMethod(Optional.of("TU Dresden"), model);
 
     assertThat(model.asMap().get("name")).isEqualTo("TU Dresden, yay");
   }
 }
 ----
+====
 
 We basically have to mimic the frameworks behavior here and can only test the actual business logic in an indirect way.
 We have to prepare a `Model` instance, which requires knowledge about the framework.
@@ -234,7 +240,9 @@ Sure we could use a constant here but let's try something different and see how 
 
 Let's extract the actual business logic into a separate class:
 
-[source, java, title="Greeter.java"]
+[title="Extracting business logic into a dedicated class"]
+====
+[source, java, title="`Greeter.java` in package `example` under `src/main/java`"]
 ----
 class Greeter {
 
@@ -246,24 +254,28 @@ class Greeter {
   }
 }
 ----
+====
 
 This piece of code is way more precise as it leaves all web related artifacts away.
 It's pure business logic: verify the input actually has text and perform our business logic on it.
 So, what would a test for the business logic implemented like this look like?
 
-[source, java, title="GreeterUnitTests.java"]
+[title="A unit test for the business logic"]
+====
+[source, java, title="`GreeterUnitTests.java` in package `example` under `src/test/java`"]
 ----
-public class GreeterUnitTests {
+class GreeterUnitTests {
 
   @Test
-  public void augmentsYayToTuDresden() {
+  void augmentsYayToTuDresden() {
 
-    Greeter greeter = new Greeter();
+    var greeter = new Greeter();
 
     assertThat(greeter.greet("TU Dresden")).isEqualTo("TU Dresden, yay");
   }
 }
 ----
+====
 
 Note, how the code has become significantly simpler as we don't have to deal with the framework APIs at all.
 
@@ -273,7 +285,7 @@ That means, the controller has a dependency on `Greeter` -- the former cannot wo
 A dependency of a class is expressed by creating a constructor taking the dependency as argument.
 We keep the reference around in a field, so that we can use it in the method.
 
-[title="Using the Greeter in the controller"]
+[title="Using the `Greeter` in the controller"]
 ====
 [source, java]
 ----
@@ -286,13 +298,13 @@ class MyController {
     this.greeter = greeter;
   }
 
-
-  @RequestMapping(path = "/hello", method = RequestMethod.GET)
+  @GetMapping("/hello")
   String myMethod(@RequestParam Optional<String> name, Model model) {
 
-    String whoToGreet = name.map(it -> greeter.greet(it)).orElse("World"); <3>
+    var whoToGreet = name.map(it -> greeter.greet(it)).orElse("World"); <3>
 
-    model.addAttribute("name", whoToGreet);
+    model.addAttribute("name", whoToGreet); <4>
+
     return "hello";
   }
 }
@@ -300,6 +312,7 @@ class MyController {
 <1> A field to keep the dependency around and to be able to refer to it from within the method.
 <2> A constructor to express the dependency.
 <3> Using the `Greeter` to access the business logic implemented in it.
+<4> Add result to the model.
 ====
 
 If we try to run this piece of code, the application will fail to start and express it cannot create an instance of `MyController` as it doesn't know about a `Greeter`.
@@ -329,9 +342,11 @@ It discovers the constructor and realizes, it needs a `Greeter` first.
 However, `Greeter` isn't under Spring's control yet as we haven't expressed that it's supposed to be managed by Spring yet.
 We can fix this by annotating with `@Component`.
 
+[title="Tuning `Greeter` into a Spring bean"]
+====
 [source, java, title="Greeter.java"]
 ----
-@Component
+@Component <1>
 class Greeter {
 
   String greet(String input) {
@@ -342,6 +357,8 @@ class Greeter {
   }
 }
 ----
+<1> The `@Component` annotation will make the class known to Spring and available for injection into other Spring beans.
+====
 During the next bootstrap, the following will happen:
 
 1. Spring scans your application and it will find both `MyController` and `Greeter` as they're both annotated.
@@ -353,12 +370,12 @@ Effectively, what Spring does is roughly equivalent to this snippet of code:
 
 [source, java]
 ----
-Greeter greeter = new Greeter();
-MyController controller = new MyController(greeter);
+var greeter = new Greeter();
+var controller = new MyController(greeter);
 ----
 
 The concept of exposing a required dependency as constructor parameter and some code (framework or manually written) handing in instances of those dependencies is called Inversion of Control.
-Read more about that in http://static.olivergierke.de/lectures/frameworks-and-libraries/#spring.ioc[Inversion of Control].
+Read more about that in link:../../lectures/frameworks-and-libraries/index.html#spring.ioc[Inversion of Control].
 
 :numbered!:
 == Appendix
@@ -373,12 +390,12 @@ Read more about that in http://static.olivergierke.de/lectures/frameworks-and-li
 [appendix]
 === Resources
 
-* http://static.olivergierke.de/lectures/frameworks-and-libraries/[Script: Frameworks and Libraries]
-* http://static.olivergierke.de/lectures/ddd-and-spring/[Script: DDD & Spring]
+* link:../../lectures/frameworks-and-libraries/[Script: Frameworks and Libraries]
+* link:../../lectures/ddd-and-spring/[Script: DDD & Spring]
 * https://github.com/st-tu-dresden/guestbook[The Guestbook sample application]
-* http://docs.spring.io/spring-boot/docs/1.5.x/reference/htmlsingle[Spring Boot reference documentation]
-* http://docs.spring.io/spring-framework/docs/4.3.x/spring-framework-reference/htmlsingle[Spring Framework reference documentation]
-* http://docs.spring.io/spring-data/jpa/docs/1.11.x/reference/html[Spring Data JPA reference documentation]
+* http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle[Spring Boot reference documentation]
+* http://docs.spring.io/spring-framework/docs/current/spring-framework-reference[Spring Framework reference documentation]
+* http://docs.spring.io/spring-data/jpa/docs/current/reference/html[Spring Data JPA reference documentation]
 * https://spring.io/guides[Getting started guides]
 * http://projects.spring.io/spring-boot[Spring Boot project home]
 

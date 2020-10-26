@@ -1,7 +1,22 @@
 #!/bin/bash
 ./render.sh
 
-read -s -p "User: " user
+read -p "User: " user
 read -s -p "Password: " password
 
-find . -type f \( -name "*.html" -o -name "*.png" -o -name "*.gif" -o -name "*.pdf" \) -exec echo {} \; -exec curl --ftp-create-dirs -T {} -u $user:$password ftp://static.olivergierke.de/lectures/{} \;
+# Uploade individual lectures
+for f in $(find . -name 'index.adoc' -exec dirname {} \; | grep -v "./index"); do
+
+    find ${f} -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.png" -o -name "*.gif" -o -name "*.pdf" \) \
+        -exec echo {} \; \
+        -exec curl --ftp-create-dirs -T {} -u $user:$password ftp://olivergierke.de/static/lectures/{} \;
+
+done;
+
+# Upload index page
+
+cd index
+
+find . -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.png" -o -name "*.gif" -o -name "*.pdf" \) \
+    -exec echo {} \; \
+    -exec curl --ftp-create-dirs -T {} -u $user:$password ftp://olivergierke.de/static/lectures/{} \;

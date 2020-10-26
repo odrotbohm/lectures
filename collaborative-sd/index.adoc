@@ -8,11 +8,11 @@ Oliver Drotbohm
 :sectids!:
 :sectanchors: true
 :icons: font
-:toc:
-:livebase: http://static.olivergierke.de/lectures
+:toc: left
+:livebase: http://static.odrotbohm.de/lectures
 :imagesdir: images/
 
-image:https://travis-ci.org/olivergierke/lectures.svg?branch=master["Build Status", link="https://travis-ci.org/olivergierke/lectures"]
+image:https://travis-ci.org/odrotbohm/lectures.svg?branch=master["Build Status", link="https://travis-ci.org/odrotbohm/lectures"]
 
 :numbered!:
 [preface]
@@ -323,9 +323,9 @@ Last but not least documentation can be rendered during the project build as plu
 [[recommendations]]
 == Recommendations from the Twittersphere
 
-See https://twitter.com/olivergierke/status/606050631653183488[this conversation] for all replies.
+See https://twitter.com/odrotbohm/status/606050631653183488[this conversation] for all replies.
 
-[quote, Oliver Gierke – @olivergierke]
+[quote, Oliver Gierke – @odrotbohm]
 If you had to teach newbies 2 or three fundamental technical things about collaborative software development, what would that be?
 
 [quote, Daniel Barth – @devkiela]

@@ -8,7 +8,7 @@ Oliver Gierke
 :sectids!:
 :sectanchors: true
 :icons: font
-:toc:
+:toc: left
 :toclevels: 3
 :livebase: http://static.olivergierke.de/lectures
 :imagesdir: images

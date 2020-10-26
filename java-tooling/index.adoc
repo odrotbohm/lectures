@@ -1,5 +1,5 @@
 = Fundamentals of Java Development Tooling
-Oliver Gierke
+Oliver Drotbohm
 :revdate: {docdatetime}
 :revremark: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 :numbered:
@@ -8,11 +8,11 @@ Oliver Gierke
 :sectids!:
 :sectanchors: true
 :icons: font
-:toc:
+:toc: left
 :toclevels: 3
-:livebase: http://static.olivergierke.de/lectures
+:livebase: http://static.odrotbohm.de/lectures
 
-image:https://travis-ci.org/olivergierke/lectures.svg?branch=master["Build Status", link="https://travis-ci.org/olivergierke/lectures"]
+image:https://travis-ci.org/odrotbohm/lectures.svg?branch=master["Build Status", link="https://travis-ci.org/odrotbohm/lectures"]
 
 :numbered!:
 [preface]
@@ -26,7 +26,7 @@ NOTE: Sections marked with this icon icon:lightbulb-o[] will define tasks that y
 [[intro.resources]]
 === Resources
 
-* https://github.com/olivergierke/lectures[Script repository] - in case you want to file tickets for improvements.
+* https://github.com/odrotbohm/lectures[Script repository] - in case you want to file tickets for improvements.
 * link:{livebase}/java-tooling[Script] - the rendered version of it.
 
 [[intro.objectives]]

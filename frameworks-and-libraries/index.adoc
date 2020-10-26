@@ -1,16 +1,15 @@
 = Frameworks and Libraries
-Oliver Gierke
+Oliver Drotbohm
 :revdate: {docdatetime}
 :revremark: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 :numbered:
 :experimental:
-:source-highlighter: prettify
 :sectids!:
 :sectanchors: true
 :icons: font
-:toc:
+:toc: left
 :toclevels: 3
-:livebase: http://static.olivergierke.de/lectures
+:livebase: http://static.odrotbohm.de/lectures
 :imagesdir: images
 
 [[intro]]

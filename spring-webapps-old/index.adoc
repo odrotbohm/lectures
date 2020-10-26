@@ -1,5 +1,5 @@
-= State-of-the-art web application development with Java and Spring
-Oliver Gierke
+= Web application development with Java and Spring
+Oliver Drotbohm
 :revdate: {docdatetime}
 :revremark: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 :numbered:
@@ -8,7 +8,7 @@ Oliver Gierke
 :sectanchors: true
 :source-highlighter: prettify
 :icons: font
-:toc:
+:toc: left
 :imagesdir: images
 
 This documents summarizes the content of a lecture I held at TU Dresden in support of the Sofware Engineering Lab. It's primary goal is to ramp up the students with the very basics of Java web application development.
@@ -32,7 +32,7 @@ Once that's done we're exploring more fundamental concepts when working with a S
 
 To round things off, we're briefly discussing continuous integration to make sure the tests introduced in previous sections are continuously executed.
 
-The source document for this script can be found in https://github.com/olivergierke/spring-webapps[this GitHub repository]. Feel free to create tickets for improvements or provide patches via pull requests.
+The source document for this script can be found in https://github.com/odrotbohm/lectures/spring-webapps-old[this GitHub repository]. Feel free to create tickets for improvements or provide patches via pull requests.
 
 :numbered:
 [[infrastructure]]
@@ -150,12 +150,12 @@ NOTE: Some changes (such as this one) need manual project refresh in Eclipse (kb
 ** `src/main/resources` - Production configuration files and resources.
 ** `src/test/java` - Test code, tests to be executed have to be named `…Tests`.
 ** `src/test/resources` - Test configuration files and resources.
-* To see that in action, simply call `mvn clean package` on the command line:
+* To see that in action, simply call `./mvnw verify` on the command line:
 +
 .Running a maven build
 ====
 ----
-Serendipity:java-web-sample olivergierke $ mvn clean package
+$ ./mvnw verify
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
@@ -163,7 +163,7 @@ Serendipity:java-web-sample olivergierke $ mvn clean package
 [INFO] ------------------------------------------------------------------------
 [INFO]
 [INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ demo ---
-[INFO] Deleting /Users/olivergierke/Documents/workspace/java-web-sample/target
+[INFO] Deleting /Users/odrotbohm/Documents/workspace/java-web-sample/target
 [INFO]
 [INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ demo ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
@@ -175,21 +175,21 @@ Serendipity:java-web-sample olivergierke $ mvn clean package
 
 [INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ demo ---
 [INFO] Changes detected - recompiling the module!
-[INFO] Compiling 2 source files to /Users/olivergierke/Documents/workspace/java-web-sample/target/classes
+[INFO] Compiling 2 source files to /Users/odrotbohm/Documents/workspace/java-web-sample/target/classes
 [INFO]
 [INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ demo ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] skip non existing resourceDirectory /Users/olivergierke/Documents/workspace/java-web-sample/src/test/resources
+[INFO] skip non existing resourceDirectory /Users/odrotbohm/Documents/workspace/java-web-sample/src/test/resources
 [INFO]
 [INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ demo ---
 [INFO] Changes detected - recompiling the module!
-[INFO] Compiling 1 source file to /Users/olivergierke/Documents/workspace/java-web-sample/target/test-classes
+[INFO] Compiling 1 source file to /Users/odrotbohm/Documents/workspace/java-web-sample/target/test-classes
 [INFO]
 
 // Executing tests
 
 [INFO] --- maven-surefire-plugin:2.15:test (default-test) @ demo ---
-[INFO] Surefire report directory: /Users/olivergierke/Documents/workspace/java-web-sample/target/surefire-reports
+[INFO] Surefire report directory: /Users/odrotbohm/Documents/workspace/java-web-sample/target/surefire-reports
 …
 Results :
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
@@ -198,7 +198,7 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 
 [INFO]
 [INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ demo ---
-[INFO] Building jar: /Users/olivergierke/Documents/workspace/java-web-sample/target/demo-0.0.1-SNAPSHOT.jar
+[INFO] Building jar: /Users/odrotbohm/Documents/workspace/java-web-sample/target/demo-0.0.1-SNAPSHOT.jar
 [INFO]
 [INFO] --- spring-boot-maven-plugin:1.1.8.RELEASE:repackage (default) @ demo ---
 [INFO] ------------------------------------------------------------------------
@@ -208,7 +208,7 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 [INFO] Finished at: Mon Oct 20 15:04:30 CEST 2014
 [INFO] Final Memory: 23M/321M
 [INFO] ------------------------------------------------------------------------
-Serendipity-:java-web-sample olivergierke $
+$
 ----
 ====
 
@@ -218,14 +218,14 @@ Serendipity-:java-web-sample olivergierke $
 * Logical definition of libraries that will be used by the project.
 * Artifact coordinates `$groupId:$artifactId:$version`.
 
-TIP: To see the current list of dependencies unfold the Maven Dependencies node in the project tree in Eclipse. Alternatively run `mvn dependency:list -Dsort` in on the command line.
+TIP: To see the current list of dependencies unfold the Maven Dependencies node in the project tree in Eclipse. Alternatively run `./mvnw dependency:list -Dsort` in on the command line.
 
 * In the current state the output of the command should look something like this:
 +
 .Listing dependencies of a Maven project
 ====
 ----
-Serendipity:java-web-sample olivergierke $ mvn dependency:list -Dsort
+$ ./mvnw dependency:list -Dsort
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
@@ -260,7 +260,7 @@ Serendipity:java-web-sample olivergierke $ mvn dependency:list -Dsort
 [INFO] Finished at: Mon Oct 20 14:57:38 CEST 2014
 [INFO] Final Memory: 15M/309M
 [INFO] ------------------------------------------------------------------------
-Serendipity:java-web-sample olivergierke $
+$
 ----
 ====
 
@@ -295,12 +295,12 @@ NOTE: Spring Boot will detect the JPA dependencies on the classpath and set up s
 ====
 
 
-* Re-run `mvn dependency:list -Dsort`
+* Re-run `mvnw dependency:list -Dsort`
 +
 .Listing Maven dependencies
 ====
 ----
-Serendipity:java-web-sample olivergierke $ mvn dependency:list -Dsort
+$ ./mvnw dependency:list -Dsort
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
@@ -345,7 +345,7 @@ Serendipity:java-web-sample olivergierke $ mvn dependency:list -Dsort
 [INFO] Finished at: Mon Oct 20 15:10:35 CEST 2014
 [INFO] Final Memory: 16M/309M
 [INFO] ------------------------------------------------------------------------
-Serendipity:java-web-sample olivergierke $
+$
 ----
 ====
 

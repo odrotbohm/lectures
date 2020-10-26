@@ -1,0 +1,43 @@
+@import url(spring.css);
+
+body.toc2 {
+    padding-top: 0;
+}
+
+/* Remove header image and add spacing for TOC */
+@media only screen and (min-width: 768px) {
+
+    #content {
+        padding-left: 8em;
+    }
+
+    #header {
+        padding-left: 8em;
+        padding-right: 0;
+    }
+
+    #header::after {
+        background-image: none;
+    }
+
+    body.toc2 #toc.toc2 {
+        margin-top: 5em !important;
+    }
+}
+
+/* Remove header image */
+@media only screen and (min-width: 1290px) {
+
+    #content {
+        padding-left: 20em;
+    }
+
+    #header {
+        padding-left: 20em;
+        padding-right: 0;
+    }
+
+    #header::after {
+        background-image: none;
+    }
+}
