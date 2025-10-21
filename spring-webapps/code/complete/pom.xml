@@ -11,7 +11,7 @@
 		<groupId>de.odrotbohm.lectures.web</groupId>
 		<artifactId>example</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 </project>

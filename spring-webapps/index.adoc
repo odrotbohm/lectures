@@ -175,8 +175,6 @@ All elements and attributes from the `th`-namespace will be processed by the tem
 [[handling-web-requests.business-logic]]
 === Invoking business logic
 
-* Architecture: web layer -> business layer -> persistence
-
 Let's make this practical. Assume we'd want to treat one particular name in a special way.
 A naïve approach might be to implement that particular logic directly in the controller.
 
@@ -202,6 +200,16 @@ class MyController {
 ----
 <1> We treat `TU Dresden` given as name by effectively turning it into a `TU Dresden, yay`
 ====
+
+Here, we evaluate the `Optional` parameter by calling its `….map(…)` method, which takes a `Function` as argument that translates the value contained in the `Optional` into a new value if one is present.
+If no value was contained in the first place, in other words, if no request parameter called "name" was given.
+The function is declared as Java 8 Lambda expression that takes a name for the input parameter, followed by an arrow `->`, followed by either an expression (as shown above) or a block (`{ }`).
+The actual expression here is a ternary if, that follows the `${condition} ? ${if true} : ${if false}` syntax.
+We compare the value of the `Optional` (bound to `it`) to `TU Dresden` and append a `, yay` in case of a match.
+If not, we keep the value as is.
+
+The final `….orElse(…)` step defaults the value, eventually assigned to `whoToGreet` to world, as -- remember -- the `Optional` might be empty in the first place.
+We then add the calculated value under the variable name "name" to the model and return the `String` "hello" to select the `hello.html` template to render the view.
 
 What's the problem with this?
 We're starting to intermingle different concerns here: we're mixing request handling (mapping the request, accessing the request parameter) and response preparing logic (populating the model) with the actual business logic.
@@ -315,6 +323,26 @@ class MyController {
 <4> Add result to the model.
 ====
 
+Described as a UML diagram our arrangement now looks as shown below.
+Our controller class, that takes care of accepting the HTTP requests, delegates the actual execution of the business logic to the simple Java class `Greeter`.
+
+.A UML model of our class arrangement
+[plantuml, format="svg", target="model.svg", align="center"]
+....
+scale 1.2
+
+class Greeter  {
+  greet(String) : String
+}
+
+class MyController <<Controller>> {
+  greeter : Greeter
+  myMethod(…) : String
+}
+
+MyController -> Greeter : uses
+....
+
 If we try to run this piece of code, the application will fail to start and express it cannot create an instance of `MyController` as it doesn't know about a `Greeter`.
 
 [source]
@@ -338,9 +366,9 @@ Consider defining a bean of type 'example.Greeter' in your configuration.
 Why is that?
 Remember that Spring will create instances of the classes it knows about?
 It knows about the controller class, as it is annotated with `@Controller`.
-It discovers the constructor and realizes, it needs a `Greeter` first.
-However, `Greeter` isn't under Spring's control yet as we haven't expressed that it's supposed to be managed by Spring yet.
-We can fix this by annotating with `@Component`.
+It discovers the constructor and realizes that it needs an instance of `Greeter` first.
+However, `Greeter` is not under Spring's control yet as we have not expressed that it is supposed to be managed by Spring yet.
+We can fix this by annotating `Greeter` with `@Component`.
 
 [title="Tuning `Greeter` into a Spring bean"]
 ====
@@ -359,6 +387,27 @@ class Greeter {
 ----
 <1> The `@Component` annotation will make the class known to Spring and available for injection into other Spring beans.
 ====
+
+Logically, our arrangement has changed to the following.
+Note, how the `Greeter` now also carries a stereotype, which causes it to be discovered by Spring.
+
+.A UML model of our working class arrangement
+[plantuml, format="svg", target="model.svg", align="center"]
+....
+scale 1.2
+
+class Greeter <<Component>> {
+  greet(String) : String
+}
+
+class MyController <<Controller>> {
+  greeter : Greeter
+  myMethod(…) : String
+}
+
+MyController -> Greeter : uses
+....
+
 During the next bootstrap, the following will happen:
 
 1. Spring scans your application and it will find both `MyController` and `Greeter` as they're both annotated.
@@ -366,8 +415,9 @@ During the next bootstrap, the following will happen:
 3. Spring creates the `Greeter` instance.
 4. Spring creates the `MyComponent` instance by handing the just created `Greeter` instance to the constructor.
 
-Effectively, what Spring does is roughly equivalent to this snippet of code:
+Effectively, what Spring does at runtime is roughly equivalent to this snippet of code:
 
+.Pesudo-code of how Spring instantiates the two classes and wires them together
 [source, java]
 ----
 var greeter = new Greeter();

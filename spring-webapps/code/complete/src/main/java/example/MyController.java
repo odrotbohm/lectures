@@ -22,6 +22,7 @@ class MyController {
 		var whoToGreet = name.map(it -> greeter.greet(it)).orElse("World");
 
 		model.addAttribute("name", whoToGreet);
+		
 		return "hello";
 	}
 }
